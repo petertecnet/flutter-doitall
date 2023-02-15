@@ -370,13 +370,12 @@ class _LoginPageState extends State<LoginPage> {
       String token = (json['token']);
       await prefs.setString('token', 'token $token');
 
-      // Crie o objeto User com os dados obtidos da API
-      User user = User(
-          name: json['name'],
-          email: _emailController.text,
-          password: _passwordController.text);
-
-      onSucess(user);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(user: user),
+        ),
+      );
     }
     if (json['status'] == 500) {
       ScaffoldMessenger.of(context).showSnackBar(

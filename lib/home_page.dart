@@ -7,7 +7,7 @@ class HomePage extends StatefulWidget {
   static var routeName;
   final User user;
 
-  HomePage({required this.user});
+  const HomePage({Key? key, required this.user}) : super(key: key);
 
   User get getUser => user;
   @override
