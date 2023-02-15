@@ -7,7 +7,7 @@ class HomePage extends StatefulWidget {
   static var routeName;
   final User user;
 
-  const HomePage({Key? key, required this.user}) : super(key: key);
+  HomePage({required this.user});
 
   User get getUser => user;
   @override
@@ -27,6 +27,7 @@ class HomePageState extends State<HomePage> {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final String email = args['email'];
+    var user;
     return Scaffold(
       drawer: Drawer(
         child: Column(

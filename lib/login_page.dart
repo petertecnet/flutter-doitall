@@ -250,15 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                               delay: 4.5,
                               child: ElevatedButton(
                                   onPressed: () {
-                                    login((user) {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              HomePage(user: user),
-                                        ),
-                                      );
-                                    });
+                                    login(user);
                                   },
                                   child: Text(
                                     "Entrar",
@@ -365,7 +357,10 @@ class _LoginPageState extends State<LoginPage> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var json = jsonDecode((response.body));
-
+    User user = User(
+        name: json['name'],
+        email: _emailController.text,
+        password: _passwordController.text);
     if (json['status'] == 200) {
       String token = (json['token']);
       await prefs.setString('token', 'token $token');
