@@ -284,21 +284,22 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Stack(
-      children: [
-        SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Image.network(
-              'https://doitall.com.br/img/background.png',
-              fit: BoxFit.cover,
-            )),
-        Container(
-          color: Colors.black.withOpacity(0.1),
-        ),
-        _body(),
-      ],
-    ));
+          children: [
+            SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Image.network(
+                  'https://doitall.com.br/img/background.png',
+                  fit: BoxFit.cover,
+                )),
+            Container(
+              color: Colors.black.withOpacity(0.1),
+            ),
+            _body(),
+          ],
+        ));
   }
 
   login() async {
