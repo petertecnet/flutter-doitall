@@ -1,15 +1,13 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:doitall/forgotpassword_page.dart';
 import 'package:doitall/home_page.dart';
 import 'package:doitall/newregister_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:doitall/controller/api_service.dart';
 
 import 'Core/Animation/Fade_Animation.dart';
-import 'Core/Colors/Hex_Color.dart';
-import 'model/user_model.dart';
 
 enum FormData {
   Email,
@@ -250,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
                               delay: 4.5,
                               child: ElevatedButton(
                                   onPressed: () {
-                                    login(user);
+                                    login();
                                   },
                                   child: Text(
                                     "Entrar",
@@ -303,7 +301,7 @@ class _LoginPageState extends State<LoginPage> {
     ));
   }
 
-  login(void onSucess(User user)) async {
+  login() async {
     if (_emailController.text == null || _emailController.text.isEmpty) {
       return ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
         backgroundColor: Colors.red,
@@ -357,18 +355,16 @@ class _LoginPageState extends State<LoginPage> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var json = jsonDecode((response.body));
-    User user = User(
-        name: json['name'],
-        email: _emailController.text,
-        password: _passwordController.text);
+
     if (json['status'] == 200) {
       String token = (json['token']);
       await prefs.setString('token', 'token $token');
-
+      String name = (json['name']);
+      await prefs.setString('name', name);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(user: user),
+          builder: (context) => HomePage(),
         ),
       );
     }

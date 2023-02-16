@@ -7,9 +7,7 @@ import 'app_controller.dart';
 import 'model/user_model.dart';
 
 class AppWidget extends StatelessWidget {
-  final User user;
-
-  AppWidget({required this.user});
+  AppWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class AppWidget extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => LoginPage(),
-            '/homepage': (context) => HomePage(user: user),
+            '/homepage': (context) => HomePage(),
             '/newregisterpage': (context) => NewRegisterPage(),
             '/forgotpasswordpage': (context) => ForgotpasswordPage(),
           },

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:doitall/forgotpassword_page.dart';
 import 'package:doitall/home_page.dart';
 import 'package:doitall/newregister_page.dart';
