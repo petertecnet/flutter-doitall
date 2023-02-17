@@ -1,13 +1,14 @@
 import 'dart:convert';
-import 'package:doitall/forgotpassword_page.dart';
-import 'package:doitall/home_page.dart';
-import 'package:doitall/newregister_page.dart';
+import 'package:doitall/models/user_model.dart';
+import 'package:doitall/pages/forgotpassword_page.dart';
+import 'package:doitall/pages/home_page.dart';
+import 'package:doitall/pages/new_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Core/Animation/Fade_Animation.dart';
-import 'Core/Colors/Hex_Color.dart';
+import '../Core/Animation/Fade_Animation.dart';
+import '../Core/Colors/Hex_Color.dart';
 import 'login_page.dart';
 
 enum FormData {
@@ -16,7 +17,7 @@ enum FormData {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, required User user}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();

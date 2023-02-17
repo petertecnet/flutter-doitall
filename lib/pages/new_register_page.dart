@@ -1,30 +1,29 @@
 import 'dart:convert';
-import 'package:doitall/forgotpassword_page.dart';
-import 'package:doitall/home_page.dart';
-import 'package:doitall/newregister_page.dart';
+import 'package:doitall/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:doitall/controller/api_service.dart';
 
-import 'Core/Animation/Fade_Animation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Core/Animation/Fade_Animation.dart';
 
 enum FormData {
+  Name,
   Email,
   password,
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class NewRegisterPage extends StatefulWidget {
+  const NewRegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<NewRegisterPage> createState() => _NewRegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _NewRegisterPageState extends State<NewRegisterPage> {
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
 
   Color enabled = const Color.fromARGB(255, 63, 56, 89);
   Color enabledtxt = Colors.white;
@@ -64,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 3,
                               child: Image.network(
                                 "https://doitall.com.br/img/logo.png",
@@ -74,31 +74,15 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(
                               height: 10,
                             ),
-                            FadeAnimation(
-                              delay: 2,
-                              child: GestureDetector(
-                                onTap: (() {
-                                  Navigator.pop(context);
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) {
-                                    return ForgotpasswordPage();
-                                  }));
-                                }),
-                                child: Text("Esqueceu a senha?",
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.9),
-                                      letterSpacing: 0.5,
-                                    )),
-                              ),
-                            ),
                             const SizedBox(height: 10),
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 3,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Text("Ainda não tem cadastro? ",
+                                  const Text("Já tem cadastro? ",
                                       style: TextStyle(
                                         color: Colors.grey,
                                         letterSpacing: 0.5,
@@ -108,10 +92,10 @@ class _LoginPageState extends State<LoginPage> {
                                       Navigator.pop(context);
                                       Navigator.of(context).push(
                                           MaterialPageRoute(builder: (context) {
-                                        return NewRegisterPage();
+                                        return LoginPage();
                                       }));
                                     },
-                                    child: Text("Registrar",
+                                    child: Text("Logar",
                                         style: TextStyle(
                                             color:
                                                 Colors.white.withOpacity(0.9),
@@ -126,6 +110,58 @@ class _LoginPageState extends State<LoginPage> {
                               height: 20,
                             ),
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
+                              delay: 4,
+                              child: Container(
+                                width: 300,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    color: selected == FormData.Name
+                                        ? enabled
+                                        : backgroundColor),
+                                padding: const EdgeInsets.all(5.0),
+                                child: TextField(
+                                  controller: _nameController,
+                                  onChanged: (text) {},
+                                  keyboardType: TextInputType.name,
+                                  onTap: () {
+                                    setState(() {
+                                      selected = FormData.Name;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                      enabledBorder: InputBorder.none,
+                                      border: InputBorder.none,
+                                      prefixIcon: Icon(
+                                        Icons.title,
+                                        color: selected == FormData.Name
+                                            ? enabledtxt
+                                            : deaible,
+                                        size: 20,
+                                      ),
+                                      hintText: 'Nome',
+                                      hintStyle: TextStyle(
+                                          color: selected == FormData.Name
+                                              ? enabledtxt
+                                              : deaible,
+                                          fontSize: 12)),
+                                  textAlignVertical: TextAlignVertical.center,
+                                  style: TextStyle(
+                                    color: selected == FormData.Name
+                                        ? enabledtxt
+                                        : deaible,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 4,
                               child: Container(
                                 width: 300,
@@ -176,6 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                               height: 20,
                             ),
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 4,
                               child: Container(
                                 width: 300,
@@ -245,13 +282,16 @@ class _LoginPageState extends State<LoginPage> {
                               height: 20,
                             ),
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 4.5,
                               child: ElevatedButton(
                                   onPressed: () {
-                                    login();
+                                    if (_formkey.currentState!.validate()) {
+                                      login();
+                                    }
                                   },
                                   child: Text(
-                                    "Entrar",
+                                    "Registrar",
                                     style: TextStyle(
                                       color: Colors.white,
                                       letterSpacing: 0.5,
@@ -284,33 +324,56 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
         body: Stack(
-          children: [
-            SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Image.network(
-                  'https://doitall.com.br/img/background.png',
-                  fit: BoxFit.cover,
-                )),
-            Container(
-              color: Colors.black.withOpacity(0.1),
-            ),
-            _body(),
-          ],
-        ));
+      children: [
+        SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Image.network(
+              'https://doitall.com.br/img/background.png',
+              fit: BoxFit.cover,
+            )),
+        Container(
+          color: Colors.black.withOpacity(0.1),
+        ),
+        _body(),
+      ],
+    ));
   }
 
   login() async {
+    if (_nameController.text == null || _nameController.text.isEmpty) {
+      return ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+        backgroundColor: Colors.red,
+        content: Center(
+          child: FadeAnimation(
+            duration: Duration(milliseconds: 500),
+            delay: 0.5,
+            child: Text(
+              'Digite seu nome',
+              selectionColor: Colors.red,
+            ),
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 100,
+            right: 20,
+            left: 20),
+      ));
+    }
     if (_emailController.text == null || _emailController.text.isEmpty) {
       return ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
         backgroundColor: Colors.red,
         content: Center(
           child: FadeAnimation(
+            duration: Duration(milliseconds: 500),
             delay: 0.5,
             child: Text(
-              'Digite o email',
+              'Digite seu email',
               selectionColor: Colors.red,
             ),
           ),
@@ -330,7 +393,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.red,
         content: Center(
           child: Text(
-            'Digite a senha',
+            'Crie uma senha',
             selectionColor: Colors.red,
           ),
         ),
@@ -344,12 +407,13 @@ class _LoginPageState extends State<LoginPage> {
             left: 20),
       ));
     }
-    var url = Uri.parse('https://doitall.com.br/api/login');
+    var url = Uri.parse('https://doitall.com.br/api/register');
 
     var response = await http.post(
       url,
       body: {
         'password': _passwordController.text,
+        'name': _nameController.text,
         'email': _emailController.text,
       },
     );
@@ -360,12 +424,10 @@ class _LoginPageState extends State<LoginPage> {
     if (json['status'] == 200) {
       String token = (json['token']);
       await prefs.setString('token', 'token $token');
-      String name = (json['name']);
-      await prefs.setString('name', name);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => LoginPage(),
         ),
       );
     }

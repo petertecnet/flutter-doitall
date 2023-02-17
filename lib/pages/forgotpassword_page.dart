@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'package:doitall/forgotpassword_page.dart';
-import 'package:doitall/home_page.dart';
-import 'package:doitall/newregister_page.dart';
+import 'package:doitall/pages/new_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Core/Animation/Fade_Animation.dart';
-import 'Core/Colors/Hex_Color.dart';
+import '../Core/Animation/Fade_Animation.dart';
+import '../Core/Colors/Hex_Color.dart';
 import 'login_page.dart';
 
 enum FormData {
@@ -64,6 +61,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 3,
                               child: Image.network(
                                 "https://doitall.com.br/img/logo.png",
@@ -75,6 +73,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                               height: 10,
                             ),
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 2,
                               child: GestureDetector(
                                 onTap: (() {
@@ -93,6 +92,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                             ),
                             const SizedBox(height: 10),
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 3,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -126,6 +126,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                               height: 20,
                             ),
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 4,
                               child: Container(
                                 width: 300,
@@ -176,6 +177,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                               height: 20,
                             ),
                             FadeAnimation(
+                              duration: Duration(milliseconds: 500),
                               delay: 4.5,
                               child: ElevatedButton(
                                   onPressed: () {
@@ -240,6 +242,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
         backgroundColor: Colors.red,
         content: Center(
           child: FadeAnimation(
+            duration: Duration(milliseconds: 500),
             delay: 0.5,
             child: Text(
               'Digite o email',
@@ -276,6 +279,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
         backgroundColor: Color.fromARGB(255, 10, 136, 198),
         content: Center(
           child: FadeAnimation(
+            duration: Duration(milliseconds: 500),
             delay: 0.2,
             child: Text(
               'Email enviado para sua caixa de entrada com instruções para recuperação de senha!',

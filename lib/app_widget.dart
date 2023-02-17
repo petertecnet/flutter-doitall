@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:doitall/home_page.dart';
-import 'package:doitall/forgotpassword_page.dart';
-import 'package:doitall/newregister_page.dart';
-import 'package:doitall/login_page.dart';
+import 'package:doitall/pages/home_page.dart';
+import 'package:doitall/pages/email_verification_page.dart';
+import 'package:doitall/pages/forgotpassword_page.dart';
+import 'package:doitall/pages/new_register_page.dart';
+import 'package:doitall/pages/login_page.dart';
 import 'app_controller.dart';
-import 'model/user_model.dart';
+import 'models/user_model.dart';
 
 class AppWidget extends StatelessWidget {
+  var user;
+
   AppWidget();
 
   @override
@@ -25,9 +28,12 @@ class AppWidget extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => LoginPage(),
-            '/homepage': (context) => HomePage(),
+            '/homepage': (context) => HomePage(
+                  user: user,
+                ),
             '/newregisterpage': (context) => NewRegisterPage(),
             '/forgotpasswordpage': (context) => ForgotpasswordPage(),
+            '/emailverificationpage': (context) => EmailVerificationPage(),
           },
         );
       },
