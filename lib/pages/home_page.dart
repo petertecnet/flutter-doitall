@@ -17,15 +17,16 @@ enum FormData {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required User user}) : super(key: key);
+  final User user;
+
+  const HomePage({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState(user: user);
 }
 
 class _HomePageState extends State<HomePage> {
   final _formkey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
 
   Color enabled = const Color.fromARGB(255, 63, 56, 89);
   Color enabledtxt = Colors.white;
@@ -33,6 +34,10 @@ class _HomePageState extends State<HomePage> {
   Color backgroundColor = const Color(0xFF1F1A30);
   bool ispasswordev = true;
   FormData? selected;
+
+  final User user;
+
+  _HomePageState({required this.user});
 
   Widget _body() {
     return Form(
@@ -47,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Minha tela'),
+        title: Text('Minha tela '),
         leading: IconButton(
           icon: Icon(Icons.menu), // icone de menu padrão do Flutter
           onPressed: () {
@@ -61,16 +66,13 @@ class _HomePageState extends State<HomePage> {
           child: ListView(
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text(
-                    'Nome do Usuário'), // substitua pelo nome do usuário logado
-                accountEmail: Text(
-                    'email@exemplo.com'), // substitua pelo email do usuário logado
+                accountName: Text(widget.user.name),
+                accountEmail: Text(widget.user.email),
                 currentAccountPicture: CircleAvatar(
-                  child: Text(
-                      'N'), // substitua pela primeira letra do nome do usuário logado
+                  child: Text(widget.user.name[0]),
                 ),
                 decoration: BoxDecoration(
-                  color: backgroundColor, // cor de fundo do cabeçalho do menu
+                  color: backgroundColor,
                 ),
               ),
               ListTile(

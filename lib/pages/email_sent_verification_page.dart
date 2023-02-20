@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../controller/email_verification_controller.dart';
 import '../Core/Animation/Fade_Animation.dart';
 import '../Core/Colors/Hex_Color.dart';
 import 'login_page.dart';
@@ -18,17 +17,18 @@ enum FormData {
   password,
 }
 
-class EmailVerificationPage extends StatefulWidget {
+class EmailSentVerificationPage extends StatefulWidget {
   final User user;
 
-  const EmailVerificationPage({Key? key, required this.user}) : super(key: key);
+  const EmailSentVerificationPage({Key? key, required this.user})
+      : super(key: key);
 
   @override
-  State<EmailVerificationPage> createState() =>
+  State<EmailSentVerificationPage> createState() =>
       _EmailVerificationPageState(user: user);
 }
 
-class _EmailVerificationPageState extends State<EmailVerificationPage> {
+class _EmailVerificationPageState extends State<EmailSentVerificationPage> {
   final _formkey = GlobalKey<FormState>();
 
   Color enabled = const Color.fromARGB(255, 63, 56, 89);
@@ -89,12 +89,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      EmailVerificationController emailVerificationController =
-                          EmailVerificationController();
-                      emailVerificationController.emailverification(
-                          context, user.id, user.emailVerifiedAt.toString());
-                    },
+                    onPressed: () {},
                     child: Text('Já confirmei meu email'),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
@@ -117,12 +112,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      EmailVerificationController emailVerificationController =
-                          EmailVerificationController();
-                      emailVerificationController.emailverification(
-                          context, user.id, user.emailVerifiedAt);
-                    },
+                    onPressed: () {},
                     child: Text('clique aqui para enviar outro'),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.blue),
@@ -141,7 +131,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Email de verificação enviado'),
+        title: Text('Verificação de email enviado novamente'),
         leading: IconButton(
           icon: Icon(Icons.menu), // icone de menu padrão do Flutter
           onPressed: () {

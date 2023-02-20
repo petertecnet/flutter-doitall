@@ -10,7 +10,7 @@ class User {
   final String? city;
   final String? uf;
   final String email;
-  final DateTime? emailVerifiedAt;
+  final String? emailVerifiedAt;
   final String? twoFactorSecret;
   final String? twoFactorRecoveryCodes;
   final DateTime? twoFactorConfirmedAt;
@@ -55,7 +55,7 @@ class User {
       email: json['user']['email'],
       emailVerifiedAt: json['user']['email_verified_at'] == null
           ? null
-          : DateTime.parse(json['user']['email_verified_at']),
+          : (json['user']['email_verified_at']),
       twoFactorSecret: json['user']['two_factor_secret'],
       twoFactorRecoveryCodes: json['user']['two_factor_recovery_codes'],
       twoFactorConfirmedAt: json['user']['two_factor_confirmed_at'] == null

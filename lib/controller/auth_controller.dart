@@ -72,7 +72,7 @@ class AuthController {
 
     if (json['status'] == 200) {
       final token = json['token'];
-      final emailVerifiedAt = json['email_verified_at'];
+      final emailVerifiedAt = json['user']['email_verified_at'];
 
       final user = User(
         id: json['user']['id'],
@@ -103,10 +103,11 @@ class AuthController {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => EmailVerificationPage(),
+            builder: (context) => EmailVerificationPage(user: user),
           ),
         );
-      } else {
+      }
+      if (user.emailVerifiedAt != null) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

@@ -1,3 +1,4 @@
+import 'package:doitall/pages/email_sent_verification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doitall/pages/home_page.dart';
 import 'package:doitall/pages/email_verification_page.dart';
@@ -33,7 +34,13 @@ class AppWidget extends StatelessWidget {
                 ),
             '/newregisterpage': (context) => NewRegisterPage(),
             '/forgotpasswordpage': (context) => ForgotpasswordPage(),
-            '/emailverificationpage': (context) => EmailVerificationPage(),
+            '/emailverificationpage': (context) => EmailVerificationPage(
+                  user: user,
+                ),
+            '/EmailSentVerificationPage': (context) =>
+                EmailSentVerificationPage(
+                  user: user,
+                ),
           },
         );
       },
