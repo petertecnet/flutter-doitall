@@ -1,14 +1,8 @@
-import 'dart:convert';
 import 'package:doitall/models/user_model.dart';
-import 'package:doitall/pages/forgotpassword_page.dart';
-import 'package:doitall/pages/home_page.dart';
-import 'package:doitall/pages/new_register_page.dart';
+import 'package:doitall/pages/user_edit_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Core/Animation/Fade_Animation.dart';
-import '../Core/Colors/Hex_Color.dart';
+import 'components/drawer_component.dart';
 import 'login_page.dart';
 
 enum FormData {
@@ -52,63 +46,19 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Minha tela '),
-        leading: IconButton(
-          icon: Icon(Icons.menu), // icone de menu padrão do Flutter
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
+        title: Text('Home'),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
           },
         ),
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Colors.white, // cor de fundo do menu
-          child: ListView(
-            children: [
-              UserAccountsDrawerHeader(
-                accountName: Text(widget.user.name),
-                accountEmail: Text(widget.user.email),
-                currentAccountPicture: CircleAvatar(
-                  child: Text(widget.user.name[0]),
-                ),
-                decoration: BoxDecoration(
-                  color: backgroundColor,
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.home), // ícone do item do menu
-                title: Text('Início'), // título do item do menu
-                onTap: () {
-                  Navigator.pop(context);
-                  // implemente a navegação para a tela desejada
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings), // ícone do item do menu
-                title: Text('Configurações'), // título do item do menu
-                onTap: () {
-                  Navigator.pop(context);
-                  // implemente a navegação para a tela desejada
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.logout), // ícone do item do menu
-                title: Text('Sair'), // título do item do menu
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                    ),
-                  );
-                  // implemente a navegação para a tela desejada
-                },
-              ),
-              // adicione quantos itens do menu desejar
-            ],
-          ),
-        ),
-      ),
+      drawer: DrawerComponent(user: user),
       body: Stack(
         children: [
           SizedBox(

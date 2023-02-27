@@ -1,16 +1,7 @@
-import 'dart:convert';
-
 import 'package:doitall/models/user_model.dart';
-import 'package:doitall/pages/forgotpassword_page.dart';
-import 'package:doitall/pages/home_page.dart';
-import 'package:doitall/pages/new_register_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../controller/email_verification_controller.dart';
 import '../Core/Animation/Fade_Animation.dart';
-import '../Core/Colors/Hex_Color.dart';
 import 'login_page.dart';
 
 enum FormData {
@@ -88,19 +79,6 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      EmailVerificationController emailVerificationController =
-                          EmailVerificationController();
-                      emailVerificationController.emailverification(
-                          context, user.id, user.emailVerifiedAt.toString());
-                    },
-                    child: Text('Já confirmei meu email'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Color.fromARGB(255, 30, 139, 185)),
-                    ),
-                  ),
                   SizedBox(height: 20),
                   Text(
                     'Email: ${user.email}',
@@ -114,6 +92,21 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     'Antes de prosseguir, por favor, veja se recebeu o link de verificação em seu e-mail. Se você não recebeu o e-mail,',
                     style: TextStyle(
                       fontSize: 16,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ),
+                      );
+                    },
+                    child: Text('Jà confirmei meu email'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(255, 70, 38, 197)),
                     ),
                   ),
                   ElevatedButton(
