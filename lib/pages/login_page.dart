@@ -24,7 +24,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   Color enabled = const Color.fromARGB(255, 63, 56, 89);
   Color enabledtxt = Colors.white;
-  Color deaible = Colors.grey;
+  Color disable = Colors.grey;
   Color backgroundColor = const Color(0xFF1F1A30);
   bool ispasswordev = true;
   FormData? selected;
@@ -127,21 +127,21 @@ class _LoginPageState extends State<LoginPage> {
                                   Icons.email_outlined,
                                   color: selected == FormData.Email
                                       ? enabledtxt
-                                      : deaible,
+                                      : disable,
                                   size: 15,
                                 ),
                                 hintText: 'Email',
                                 hintStyle: TextStyle(
                                     color: selected == FormData.Email
                                         ? enabledtxt
-                                        : deaible,
+                                        : disable,
                                     fontSize: 15),
                               ),
                               textAlignVertical: TextAlignVertical.center,
                               style: TextStyle(
                                   color: selected == FormData.Email
                                       ? enabledtxt
-                                      : deaible,
+                                      : disable,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15),
                             ),
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                                     Icons.lock_open_outlined,
                                     color: selected == FormData.password
                                         ? enabledtxt
-                                        : deaible,
+                                        : disable,
                                     size: 15,
                                   ),
                                   suffixIcon: IconButton(
@@ -185,14 +185,14 @@ class _LoginPageState extends State<LoginPage> {
                                             Icons.visibility_off,
                                             color: selected == FormData.password
                                                 ? enabledtxt
-                                                : deaible,
+                                                : disable,
                                             size: 15,
                                           )
                                         : Icon(
                                             Icons.visibility,
                                             color: selected == FormData.password
                                                 ? enabledtxt
-                                                : deaible,
+                                                : disable,
                                             size: 15,
                                           ),
                                     onPressed: () => setState(
@@ -202,14 +202,14 @@ class _LoginPageState extends State<LoginPage> {
                                   hintStyle: TextStyle(
                                       color: selected == FormData.password
                                           ? enabledtxt
-                                          : deaible,
+                                          : disable,
                                       fontSize: 15)),
                               obscureText: ispasswordev,
                               textAlignVertical: TextAlignVertical.center,
                               style: TextStyle(
                                   color: selected == FormData.password
                                       ? enabledtxt
-                                      : deaible,
+                                      : disable,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15),
                             ),
@@ -269,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
                         return ForgotpasswordPage();
                       }));
                     }),
-                    child: Text("Can't Log In?",
+                    child: Text("Esqueceu a senha?",
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.9),
                           letterSpacing: 0.5,
@@ -284,7 +284,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text("Don't have an account? ",
+                      const Text("Não tem cadastro? ",
                           style: TextStyle(
                             color: Colors.grey,
                             letterSpacing: 0.5,
@@ -297,7 +297,7 @@ class _LoginPageState extends State<LoginPage> {
                             return NewRegisterPage();
                           }));
                         },
-                        child: Text("Sign up",
+                        child: Text("Novo cadastro",
                             style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
                                 fontWeight: FontWeight.bold,

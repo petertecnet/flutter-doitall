@@ -12,7 +12,7 @@ import '../pages/email_verification_page.dart';
 class AuthController {
   Future<void> login(
       BuildContext context, String email, String password) async {
-    if (email == null || email.isEmpty) {
+    if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
@@ -38,7 +38,7 @@ class AuthController {
       );
       return;
     }
-    if (password == null || password.isEmpty) {
+    if (password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,

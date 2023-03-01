@@ -1,43 +1,50 @@
 class User {
   final String? token;
-  final int id;
-  final int status;
-  final int role;
-  final String name;
-  final String phone;
-  final String cpf;
-  final String? address;
-  final String? city;
-  final String? uf;
-  final String email;
+  final int? id;
+  final int? status;
+  final int? role;
+  late final String? name;
+  late final String? email;
+  late final String? phone;
+  late final String? cpf;
+
+  late final String? address;
+  late final String? city;
+  late final String? uf;
+  late final String? cep;
+
   final String? emailVerifiedAt;
   final String? twoFactorSecret;
   final String? twoFactorRecoveryCodes;
   final DateTime? twoFactorConfirmedAt;
   final String? uid;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final dynamic deletedAt;
 
   User({
-    required this.id,
-    required this.status,
-    required this.role,
-    required this.name,
-    required this.phone,
-    required this.cpf,
+    this.id,
+    this.status,
+    this.role,
+    this.name,
+    this.email,
+    this.phone,
+    this.cpf,
+
     this.token,
+
     this.address,
     this.city,
     this.uf,
-    required this.email,
+    this.cep,
+    
     this.emailVerifiedAt,
     this.twoFactorSecret,
     this.twoFactorRecoveryCodes,
     this.twoFactorConfirmedAt,
     this.uid,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
     this.deletedAt,
   });
 
