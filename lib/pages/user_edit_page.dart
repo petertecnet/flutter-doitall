@@ -3,7 +3,7 @@ import '../Core/Animation/Fade_Animation.dart';
 import '../Core/Colors/Hex_Color.dart';
 import '../controller/user_controller.dart';
 import '../models/user_model.dart';
-import 'componentes/drawer_component.dart';
+import 'components/drawer_component.dart';
 
 enum FormData { Name, Phone, Email, Cpf, Address, City, Uf, Cep }
 
