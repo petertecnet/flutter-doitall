@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:doitall/controller/email_verification_controller.dart';
 import 'package:doitall/models/user_model.dart';
 import 'package:doitall/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Core/Animation/Fade_Animation.dart';
 import '../pages/email_verification_page.dart';
+import '../pages/login_page.dart';
+import '../pages/reset_password_page.dart';
 
 class AuthController {
   Future<void> login(
@@ -71,30 +72,7 @@ class AuthController {
     final json = jsonDecode(response.body);
 
     if (json['status'] == 200) {
-      final token = json['token'];
-      final emailVerifiedAt = json['user']['email_verified_at'];
-
-      final user = User(
-        id: json['user']['id'],
-        status: json['user']['status'],
-        role: json['user']['role'],
-        name: json['user']['name'],
-        phone: json['user']['phone'],
-        cpf: json['user']['cpf'],
-        token: 'token $token',
-        email: email,
-        emailVerifiedAt: emailVerifiedAt,
-        address: json['user']['address'],
-        city: json['user']['city'],
-        uf: json['user']['uf'],
-        twoFactorSecret: json['user']['two_factor_secret'],
-        twoFactorRecoveryCodes: json['user']['two_factor_recovery_codes'],
-        twoFactorConfirmedAt: json['user']['two_factor_confirmed_at'],
-        uid: json['user']['uid'],
-        createdAt: DateTime.parse(json['user']['created_at']),
-        updatedAt: DateTime.parse(json['user']['updated_at']),
-        deletedAt: json['user']['deleted_at'],
-      );
+      final user = User.fromJson(json);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', user.token);
       await prefs.setString('name', user.name);
@@ -125,5 +103,166 @@ class AuthController {
         ),
       );
     }
+  }
+
+  Future<void> register(
+    BuildContext context,
+    String name,
+    String email,
+    String cpf,
+    String phone,
+    String password,
+  ) async {
+    final url = Uri.parse('https://doitall.com.br/api/register');
+
+    final response = await http.post(
+      url,
+      body: {
+        'name': name,
+        'email': email,
+        'cpf': cpf,
+        'phone': phone,
+        'password': password,
+      },
+    );
+    final json = jsonDecode(response.body);
+
+    if (json['status'] == 200) {
+      login(context, email, password);
+    } else {
+      final message = json['message'];
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Center(child: Text(message)),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  Future<void> codevalidation(
+    BuildContext context,
+    User user,
+    String code,
+  ) async {
+    final url = Uri.parse('https://doitall.com.br/api/codevalidation');
+
+    final response = await http.post(
+      url,
+      body: {
+        'id': user.id.toString(),
+        'verification_code': code,
+      },
+    );
+    final json = jsonDecode(response.body);
+    user = User.fromJson(json);
+    if (json['status'] == 200) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(user: user),
+        ),
+      );
+    } else {
+      final message = json['message'];
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Center(child: Text(message)),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  Future<void> sendemailcode(
+    BuildContext context,
+    User user,
+  ) async {
+    final url = Uri.parse('https://doitall.com.br/api/sendemailcode');
+
+    final response = await http.post(
+      url,
+      body: {
+        'id': user.id.toString(),
+      },
+    );
+    final json = jsonDecode(response.body);
+    user = User.fromJson(json);
+    final message = json['message'];
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Center(child: Text(message)),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  Future<void> sendCodeForgotPassword(
+    BuildContext context,
+    String email,
+  ) async {
+    final url = Uri.parse('https://doitall.com.br/api/sendCodeForgotPassword');
+
+    final response = await http.post(
+      url,
+      body: {
+        'email': email,
+      },
+    );
+    final json = jsonDecode(response.body);
+
+    final status = json['status'];
+    if (status == 200) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResetPasswordPage(email: email),
+        ),
+      );
+    }
+    final message = json['message'];
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.redAccent,
+        content: Center(child: Text(message)),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  Future<void> codevalidationPassword(
+    BuildContext context,
+    String email,
+    String code,
+    String password,
+  ) async {
+    final url = Uri.parse('https://doitall.com.br/api/codevalidationPassword');
+
+    final response = await http.post(
+      url,
+      body: {'email': email, 'forgotpassword_code': code, 'password': password},
+    );
+    final json = jsonDecode(response.body);
+
+    final status = json['status'];
+    if (status == 200) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      );
+    }
+    final message = json['message'];
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Color.fromARGB(255, 18, 191, 76),
+        content: Center(child: Text(message)),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 }

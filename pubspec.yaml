@@ -33,6 +33,8 @@ dependencies:
   simple_animations: ^4.1.0
   supercharged: ^2.1.1
   tab_indicator_styler: ^2.0.0
+  image_picker: ^0.8.0+4
+  file_picker: ^1.4.3+2
 
 dev_dependencies:
   flutter_test:

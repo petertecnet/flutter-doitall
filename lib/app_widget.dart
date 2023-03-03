@@ -1,3 +1,4 @@
+import 'package:doitall/pages/reset_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doitall/pages/home_page.dart';
 import 'package:doitall/pages/user_edit_page.dart';
@@ -34,6 +35,7 @@ class AppWidget extends StatelessWidget {
                 ),
             '/newregisterpage': (context) => NewRegisterPage(),
             '/forgotpasswordpage': (context) => ForgotpasswordPage(),
+            '/ResetPasswordPage': (context) => ResetPasswordPage( email: ''),
             '/emailverificationpage': (context) => EmailVerificationPage(
                   user: user,
                 ),

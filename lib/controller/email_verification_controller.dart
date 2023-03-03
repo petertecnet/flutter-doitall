@@ -21,27 +21,7 @@ class EmailVerificationController {
       );
 
       final json = jsonDecode(response.body);
-      final user = User(
-        id: json['user']['id'],
-        status: json['user']['status'],
-        role: json['user']['role'],
-        name: json['user']['name'],
-        phone: json['user']['phone'],
-        cpf: json['user']['cpf'],
-        token: json['token'],
-        email: json['user']['email'],
-        emailVerifiedAt: json['user']['email_verified_at'],
-        address: json['user']['address'],
-        city: json['user']['city'],
-        uf: json['user']['uf'],
-        twoFactorSecret: json['user']['two_factor_secret'],
-        twoFactorRecoveryCodes: json['user']['two_factor_recovery_codes'],
-        twoFactorConfirmedAt: json['user']['two_factor_confirmed_at'],
-        uid: json['user']['uid'],
-        createdAt: DateTime.parse(json['user']['created_at']),
-        updatedAt: DateTime.parse(json['user']['updated_at']),
-        deletedAt: json['user']['deleted_at'],
-      );
+      final user = User.fromJson(json);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -59,27 +39,7 @@ class EmailVerificationController {
 
     final json = jsonDecode(response.body);
     final emailVerifiedAt = json['user']['email_verified_at'];
-    final user = User(
-      id: json['user']['id'],
-      status: json['user']['status'],
-      role: json['user']['role'],
-      name: json['user']['name'],
-      phone: json['user']['phone'],
-      cpf: json['user']['cpf'],
-      token: json['token'],
-      email: json['user']['email'],
-      emailVerifiedAt: json['user']['email_verified_at'],
-      address: json['user']['address'],
-      city: json['user']['city'],
-      uf: json['user']['uf'],
-      twoFactorSecret: json['user']['two_factor_secret'],
-      twoFactorRecoveryCodes: json['user']['two_factor_recovery_codes'],
-      twoFactorConfirmedAt: json['user']['two_factor_confirmed_at'],
-      uid: json['user']['uid'],
-      createdAt: DateTime.parse(json['user']['created_at']),
-      updatedAt: DateTime.parse(json['user']['updated_at']),
-      deletedAt: json['user']['deleted_at'],
-    );
+    final user = User.fromJson(json);
 
     final token = json['token'];
     final prefs = await SharedPreferences.getInstance();

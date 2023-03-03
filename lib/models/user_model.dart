@@ -3,6 +3,7 @@ class User {
   final int? id;
   final int? status;
   final int? role;
+
   late final String? name;
   late final String? email;
   late final String? phone;
@@ -12,6 +13,11 @@ class User {
   late final String? city;
   late final String? uf;
   late final String? cep;
+  late final String? forgotpasswordcode;
+  late final String? temporaryemail;
+  late final String? lastemail;
+
+  late final String? password;
 
   final String? emailVerifiedAt;
   final String? twoFactorSecret;
@@ -28,16 +34,15 @@ class User {
     this.role,
     this.name,
     this.email,
+    this.password,
     this.phone,
     this.cpf,
-
     this.token,
-
     this.address,
     this.city,
     this.uf,
     this.cep,
-    
+    this.temporaryemail,
     this.emailVerifiedAt,
     this.twoFactorSecret,
     this.twoFactorRecoveryCodes,
@@ -60,9 +65,9 @@ class User {
       city: json['user']['city'],
       uf: json['user']['uf'],
       email: json['user']['email'],
-      emailVerifiedAt: json['user']['email_verified_at'] == null
-          ? null
-          : (json['user']['email_verified_at']),
+      password: json['user']['password'],
+      temporaryemail: json['user']['temporaryemail'],
+      emailVerifiedAt: json['user']['email_verified_at'],
       twoFactorSecret: json['user']['two_factor_secret'],
       twoFactorRecoveryCodes: json['user']['two_factor_recovery_codes'],
       twoFactorConfirmedAt: json['user']['two_factor_confirmed_at'] == null

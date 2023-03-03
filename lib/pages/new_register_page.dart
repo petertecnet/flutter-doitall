@@ -1,444 +1,453 @@
-import 'dart:convert';
-import 'package:doitall/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:doitall/controller/auth_controller.dart';
 import '../Core/Animation/Fade_Animation.dart';
+import '../Core/Colors/Hex_Color.dart';
+import 'login_page.dart';
 
-enum FormData {
-  Name,
-  Email,
-  password,
-}
+enum FormData { Name, Email, Cpf, Phone, Password }
 
 class NewRegisterPage extends StatefulWidget {
-  const NewRegisterPage({Key? key}) : super(key: key);
-
   @override
   State<NewRegisterPage> createState() => _NewRegisterPageState();
 }
 
 class _NewRegisterPageState extends State<NewRegisterPage> {
-  final _formkey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _nameController = TextEditingController();
-
   Color enabled = const Color.fromARGB(255, 63, 56, 89);
   Color enabledtxt = Colors.white;
-  Color deaible = Colors.grey;
+  Color disable = Colors.grey;
   Color backgroundColor = const Color(0xFF1F1A30);
   bool ispasswordev = true;
   FormData? selected;
-
-  Widget _body() {
-    return Form(
-      key: _formkey,
-      child: Column(
-        children: [
-          SingleChildScrollView(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 10,
-                    ),
-                    Card(
-                      elevation: 5,
-                      color: const Color.fromARGB(255, 171, 211, 250)
-                          .withOpacity(0.4),
-                      child: Container(
-                        width: 450,
-                        padding: const EdgeInsets.all(40.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            FadeAnimation(
-                              duration: Duration(milliseconds: 500),
-                              delay: 3,
-                              child: Image.network(
-                                "https://doitall.com.br/img/logo.png",
-                                width: 100,
-                                height: 100,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const SizedBox(height: 10),
-                            FadeAnimation(
-                              duration: Duration(milliseconds: 500),
-                              delay: 3,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text("Já tem cadastro? ",
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        letterSpacing: 0.5,
-                                      )),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (context) {
-                                        return LoginPage();
-                                      }));
-                                    },
-                                    child: Text("Logar",
-                                        style: TextStyle(
-                                            color:
-                                                Colors.white.withOpacity(0.9),
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 0.5,
-                                            fontSize: 14)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            FadeAnimation(
-                              duration: Duration(milliseconds: 500),
-                              delay: 4,
-                              child: Container(
-                                width: 300,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color: selected == FormData.Name
-                                        ? enabled
-                                        : backgroundColor),
-                                padding: const EdgeInsets.all(5.0),
-                                child: TextField(
-                                  controller: _nameController,
-                                  onChanged: (text) {},
-                                  keyboardType: TextInputType.name,
-                                  onTap: () {
-                                    setState(() {
-                                      selected = FormData.Name;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.title,
-                                        color: selected == FormData.Name
-                                            ? enabledtxt
-                                            : deaible,
-                                        size: 20,
-                                      ),
-                                      hintText: 'Nome',
-                                      hintStyle: TextStyle(
-                                          color: selected == FormData.Name
-                                              ? enabledtxt
-                                              : deaible,
-                                          fontSize: 12)),
-                                  textAlignVertical: TextAlignVertical.center,
-                                  style: TextStyle(
-                                    color: selected == FormData.Name
-                                        ? enabledtxt
-                                        : deaible,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            FadeAnimation(
-                              duration: Duration(milliseconds: 500),
-                              delay: 4,
-                              child: Container(
-                                width: 300,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color: selected == FormData.Email
-                                        ? enabled
-                                        : backgroundColor),
-                                padding: const EdgeInsets.all(5.0),
-                                child: TextField(
-                                  controller: _emailController,
-                                  onChanged: (text) {},
-                                  keyboardType: TextInputType.emailAddress,
-                                  onTap: () {
-                                    setState(() {
-                                      selected = FormData.Email;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.email_outlined,
-                                        color: selected == FormData.Email
-                                            ? enabledtxt
-                                            : deaible,
-                                        size: 20,
-                                      ),
-                                      hintText: 'Email',
-                                      hintStyle: TextStyle(
-                                          color: selected == FormData.Email
-                                              ? enabledtxt
-                                              : deaible,
-                                          fontSize: 12)),
-                                  textAlignVertical: TextAlignVertical.center,
-                                  style: TextStyle(
-                                    color: selected == FormData.Email
-                                        ? enabledtxt
-                                        : deaible,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            FadeAnimation(
-                              duration: Duration(milliseconds: 500),
-                              delay: 4,
-                              child: Container(
-                                width: 300,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color: selected == FormData.password
-                                        ? enabled
-                                        : backgroundColor),
-                                padding: const EdgeInsets.all(5.0),
-                                child: TextField(
-                                  controller: _passwordController,
-                                  onTap: () {
-                                    setState(() {
-                                      selected = FormData.password;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.lock_open_outlined,
-                                        color: selected == FormData.password
-                                            ? enabledtxt
-                                            : deaible,
-                                        size: 20,
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: ispasswordev
-                                            ? Icon(
-                                                Icons.visibility_off,
-                                                color: selected ==
-                                                        FormData.password
-                                                    ? enabledtxt
-                                                    : deaible,
-                                                size: 20,
-                                              )
-                                            : Icon(
-                                                Icons.visibility,
-                                                color: selected ==
-                                                        FormData.password
-                                                    ? enabledtxt
-                                                    : deaible,
-                                                size: 20,
-                                              ),
-                                        onPressed: () => setState(
-                                            () => ispasswordev = !ispasswordev),
-                                      ),
-                                      hintText: 'Senha',
-                                      hintStyle: TextStyle(
-                                          color: selected == FormData.password
-                                              ? enabledtxt
-                                              : deaible,
-                                          fontSize: 12)),
-                                  obscureText: ispasswordev,
-                                  textAlignVertical: TextAlignVertical.center,
-                                  style: TextStyle(
-                                      color: selected == FormData.password
-                                          ? enabledtxt
-                                          : deaible,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            FadeAnimation(
-                              duration: Duration(milliseconds: 500),
-                              delay: 4.5,
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_formkey.currentState!.validate()) {
-                                      login();
-                                    }
-                                  },
-                                  child: Text(
-                                    "Registrar",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      letterSpacing: 0.5,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: Color(0XFF00b3eb),
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 14.0, horizontal: 80),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0)))),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  final TextEditingController nameController = new TextEditingController();
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController cpfController = new TextEditingController();
+  final TextEditingController phoneController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      children: [
-        SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Image.network(
-              'https://doitall.com.br/img/background.png',
-              fit: BoxFit.cover,
-            )),
-        Container(
-          color: Colors.black.withOpacity(0.1),
-        ),
-        _body(),
-      ],
-    ));
-  }
-
-  login() async {
-    if (_nameController.text == null || _nameController.text.isEmpty) {
-      return ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-        backgroundColor: Colors.red,
-        content: Center(
-          child: FadeAnimation(
-            duration: Duration(milliseconds: 500),
-            delay: 0.5,
-            child: Text(
-              'Digite seu nome',
-              selectionColor: Colors.red,
-            ),
-          ),
-        ),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height - 100,
-            right: 20,
-            left: 20),
-      ));
-    }
-    if (_emailController.text == null || _emailController.text.isEmpty) {
-      return ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-        backgroundColor: Colors.red,
-        content: Center(
-          child: FadeAnimation(
-            duration: Duration(milliseconds: 500),
-            delay: 0.5,
-            child: Text(
-              'Digite seu email',
-              selectionColor: Colors.red,
-            ),
-          ),
-        ),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height - 100,
-            right: 20,
-            left: 20),
-      ));
-    }
-    if (_passwordController.text == null || _passwordController.text.isEmpty) {
-      return ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-        backgroundColor: Colors.red,
-        content: Center(
-          child: Text(
-            'Crie uma senha',
-            selectionColor: Colors.red,
-          ),
-        ),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height - 100,
-            right: 20,
-            left: 20),
-      ));
-    }
-    var url = Uri.parse('https://doitall.com.br/api/register');
-
-    var response = await http.post(
-      url,
-      body: {
-        'password': _passwordController.text,
-        'name': _nameController.text,
-        'email': _emailController.text,
+    return WillPopScope(
+      onWillPop: () async {
+        // Retorna false para impedir que a página seja fechada
+        return false;
       },
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: const [0.1, 0.4, 0.7, 0.9],
+              colors: [
+                HexColor("#FFFFFF").withOpacity(0.8),
+                HexColor("#FFFFFF"),
+                HexColor("#FFFFFF"),
+                HexColor("#FFFFFF")
+              ],
+            ),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                  HexColor("#fff").withOpacity(0.9), BlendMode.dstATop),
+              image: const NetworkImage(
+                'https://doitall.com.br/img/background.png',
+              ),
+            ),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Card(
+                    elevation: 5,
+                    color: const Color.fromARGB(255, 171, 211, 250)
+                        .withOpacity(0.4),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.all(40.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 0.2,
+                            child: Image.network(
+                              "https://doitall.com.br/img/logo.png",
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 2,
+                            child: const Text(
+                              "DOITALL",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 35,
+                                  letterSpacing: 2),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 3,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                color: selected == FormData.Name
+                                    ? enabled
+                                    : backgroundColor,
+                              ),
+                              padding: const EdgeInsets.all(5.0),
+                              child: TextField(
+                                controller: nameController,
+                                onTap: () {
+                                  setState(() {
+                                    selected = FormData.Name;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(
+                                    Icons.text_fields,
+                                    color: selected == FormData.Name
+                                        ? enabledtxt
+                                        : disable,
+                                    size: 15,
+                                  ),
+                                  hintText: 'Nome',
+                                  hintStyle: TextStyle(
+                                      color: selected == FormData.Name
+                                          ? enabledtxt
+                                          : disable,
+                                      fontSize: 15),
+                                ),
+                                textAlignVertical: TextAlignVertical.center,
+                                style: TextStyle(
+                                    color: selected == FormData.Name
+                                        ? enabledtxt
+                                        : disable,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 3,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                color: selected == FormData.Email
+                                    ? enabled
+                                    : backgroundColor,
+                              ),
+                              padding: const EdgeInsets.all(5.0),
+                              child: TextField(
+                                controller: emailController,
+                                onTap: () {
+                                  setState(() {
+                                    selected = FormData.Email;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(
+                                    Icons.email_outlined,
+                                    color: selected == FormData.Email
+                                        ? enabledtxt
+                                        : disable,
+                                    size: 15,
+                                  ),
+                                  hintText: 'Email',
+                                  hintStyle: TextStyle(
+                                      color: selected == FormData.Email
+                                          ? enabledtxt
+                                          : disable,
+                                      fontSize: 15),
+                                ),
+                                textAlignVertical: TextAlignVertical.center,
+                                style: TextStyle(
+                                    color: selected == FormData.Email
+                                        ? enabledtxt
+                                        : disable,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 3,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                color: selected == FormData.Cpf
+                                    ? enabled
+                                    : backgroundColor,
+                              ),
+                              padding: const EdgeInsets.all(5.0),
+                              child: TextField(
+                                controller: cpfController,
+                                onTap: () {
+                                  setState(() {
+                                    selected = FormData.Cpf;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(
+                                    Icons.credit_card,
+                                    color: selected == FormData.Cpf
+                                        ? enabledtxt
+                                        : disable,
+                                    size: 15,
+                                  ),
+                                  hintText: 'Cpf',
+                                  hintStyle: TextStyle(
+                                      color: selected == FormData.Cpf
+                                          ? enabledtxt
+                                          : disable,
+                                      fontSize: 15),
+                                ),
+                                textAlignVertical: TextAlignVertical.center,
+                                style: TextStyle(
+                                    color: selected == FormData.Cpf
+                                        ? enabledtxt
+                                        : disable,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 3,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                color: selected == FormData.Phone
+                                    ? enabled
+                                    : backgroundColor,
+                              ),
+                              padding: const EdgeInsets.all(5.0),
+                              child: TextField(
+                                controller: phoneController,
+                                onTap: () {
+                                  setState(() {
+                                    selected = FormData.Phone;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(
+                                    Icons.credit_card,
+                                    color: selected == FormData.Phone
+                                        ? enabledtxt
+                                        : disable,
+                                    size: 15,
+                                  ),
+                                  hintText: 'Telefone',
+                                  hintStyle: TextStyle(
+                                      color: selected == FormData.Phone
+                                          ? enabledtxt
+                                          : disable,
+                                      fontSize: 15),
+                                ),
+                                textAlignVertical: TextAlignVertical.center,
+                                style: TextStyle(
+                                    color: selected == FormData.Phone
+                                        ? enabledtxt
+                                        : disable,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 3,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  color: selected == FormData.Password
+                                      ? enabled
+                                      : backgroundColor),
+                              padding: const EdgeInsets.all(5.0),
+                              child: TextField(
+                                controller: passwordController,
+                                onTap: () {
+                                  setState(() {
+                                    selected = FormData.Password;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    border: InputBorder.none,
+                                    prefixIcon: Icon(
+                                      Icons.lock_open_outlined,
+                                      color: selected == FormData.Password
+                                          ? enabledtxt
+                                          : disable,
+                                      size: 15,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: ispasswordev
+                                          ? Icon(
+                                              Icons.visibility_off,
+                                              color:
+                                                  selected == FormData.Password
+                                                      ? enabledtxt
+                                                      : disable,
+                                              size: 15,
+                                            )
+                                          : Icon(
+                                              Icons.visibility,
+                                              color:
+                                                  selected == FormData.Password
+                                                      ? enabledtxt
+                                                      : disable,
+                                              size: 15,
+                                            ),
+                                      onPressed: () => setState(
+                                          () => ispasswordev = !ispasswordev),
+                                    ),
+                                    hintText: 'Senha',
+                                    hintStyle: TextStyle(
+                                        color: selected == FormData.Password
+                                            ? enabledtxt
+                                            : disable,
+                                        fontSize: 15)),
+                                obscureText: ispasswordev,
+                                textAlignVertical: TextAlignVertical.center,
+                                style: TextStyle(
+                                    color: selected == FormData.Password
+                                        ? enabledtxt
+                                        : disable,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 1,
+                            child: TextButton(
+                                onPressed: () {
+                                  AuthController authController =
+                                      AuthController();
+                                  authController.register(
+                                    context,
+                                    nameController.text.trim(),
+                                    emailController.text.trim(),
+                                    cpfController.text.trim(),
+                                    phoneController.text.trim(),
+                                    passwordController.text.trim(),
+                                  );
+                                },
+                                child: Text(
+                                  "Cadastrar",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: 0.5,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: TextButton.styleFrom(
+                                    backgroundColor: Color(0xFF2697FF),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14.0, horizontal: 80),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0)))),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  //End of Center Card
+                  //Start of outer card
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const SizedBox(height: 10),
+                  FadeAnimation(
+                    duration: Duration(milliseconds: 500),
+                    delay: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text("Jà tem cadastro? ",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              letterSpacing: 0.5,
+                            )),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return LoginPage();
+                            }));
+                          },
+                          child: Text("Fazer login",
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.5,
+                                  fontSize: 14)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var json = jsonDecode((response.body));
-
-    if (json['status'] == 200) {
-      String token = (json['token']);
-      await prefs.setString('token', 'token $token');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ),
-      );
-    }
-    if (json['status'] == 500) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.redAccent,
-          content: Center(child: Text('Email e senha inválidos')),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    }
   }
 }
