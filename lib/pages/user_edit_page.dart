@@ -4,7 +4,8 @@ import '../Core/Colors/Hex_Color.dart';
 import '../controller/user_controller.dart';
 import '../models/user_model.dart';
 import 'components/drawer_component.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 enum FormData {
@@ -40,6 +41,8 @@ class _UserEditPageState extends State<UserEditPage>
   bool ispasswordev = true;
   FormData? selected;
   final User user;
+  ImagePicker picker = ImagePicker();
+  File? imageFile;
 
   TextEditingController nameController = new TextEditingController();
   TextEditingController phoneController = new TextEditingController();
@@ -73,7 +76,7 @@ class _UserEditPageState extends State<UserEditPage>
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Meus perfil'),
+          title: const Text('Meu perfil'),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -88,7 +91,7 @@ class _UserEditPageState extends State<UserEditPage>
             controller: _tabController,
             tabs: const [
               Tab(text: 'Dados Pessoais'),
-              Tab(text: 'Edereço'),
+              Tab(text: 'Endereço'),
               Tab(text: 'Acesso'),
               Tab(text: 'Fotos'),
             ],
@@ -1188,7 +1191,7 @@ class _UserEditPageState extends State<UserEditPage>
                                           );
                                         }));
                                       },
-                                      child: Text("Acesso",
+                                      child: Text("Fotos",
                                           style: TextStyle(
                                               color:
                                                   Colors.white.withOpacity(0.9),
@@ -1199,151 +1202,24 @@ class _UserEditPageState extends State<UserEditPage>
                                   ],
                                 ),
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
                               FadeAnimation(
                                 delay: 1,
                                 duration: Duration(milliseconds: 500),
                                 child: Container(
                                   width: 300,
                                   height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color:
-                                        selected == FormData.CurrentlyPassword
-                                            ? enabled
-                                            : backgroundColor,
-                                  ),
                                   padding: const EdgeInsets.all(5.0),
-                                  child: TextField(
-                                    controller: currentlyPasswordController,
-                                    onTap: () {
-                                      setState(() {
-                                        selected = FormData.CurrentlyPassword;
-                                      });
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      final pickedFile = await picker.getImage(
+                                          source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        setState(() {
+                                          imageFile = File(pickedFile.path);
+                                        });
+                                      }
                                     },
-                                    decoration: InputDecoration(
-                                        enabledBorder: InputBorder.none,
-                                        border: InputBorder.none,
-                                        prefixIcon: Icon(
-                                          Icons.lock_open_outlined,
-                                          color: selected ==
-                                                  FormData.CurrentlyPassword
-                                              ? enabledtxt
-                                              : disable,
-                                          size: 20,
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: ispasswordev
-                                              ? Icon(
-                                                  Icons.visibility_off,
-                                                  color: selected ==
-                                                          FormData
-                                                              .CurrentlyPassword
-                                                      ? enabledtxt
-                                                      : disable,
-                                                  size: 20,
-                                                )
-                                              : Icon(
-                                                  Icons.visibility,
-                                                  color: selected ==
-                                                          FormData
-                                                              .CurrentlyPassword
-                                                      ? enabledtxt
-                                                      : disable,
-                                                  size: 20,
-                                                ),
-                                          onPressed: () => setState(() =>
-                                              ispasswordev = !ispasswordev),
-                                        ),
-                                        hintText: 'Senha atual',
-                                        hintStyle: TextStyle(
-                                            color: selected ==
-                                                    FormData.CurrentlyPassword
-                                                ? enabledtxt
-                                                : disable,
-                                            fontSize: 12)),
-                                    obscureText: ispasswordev,
-                                    textAlignVertical: TextAlignVertical.center,
-                                    style: TextStyle(
-                                        color: selected ==
-                                                FormData.CurrentlyPassword
-                                            ? enabledtxt
-                                            : disable,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              FadeAnimation(
-                                delay: 1,
-                                duration: Duration(milliseconds: 500),
-                                child: Container(
-                                  width: 300,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color: selected == FormData.Password
-                                        ? enabled
-                                        : backgroundColor,
-                                  ),
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: TextField(
-                                    controller: passwordController,
-                                    onTap: () {
-                                      setState(() {
-                                        selected = FormData.Password;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                        enabledBorder: InputBorder.none,
-                                        border: InputBorder.none,
-                                        prefixIcon: Icon(
-                                          Icons.lock_open_outlined,
-                                          color: selected == FormData.Password
-                                              ? enabledtxt
-                                              : disable,
-                                          size: 20,
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: ispasswordev
-                                              ? Icon(
-                                                  Icons.visibility_off,
-                                                  color: selected ==
-                                                          FormData.Password
-                                                      ? enabledtxt
-                                                      : disable,
-                                                  size: 20,
-                                                )
-                                              : Icon(
-                                                  Icons.visibility,
-                                                  color: selected ==
-                                                          FormData.Password
-                                                      ? enabledtxt
-                                                      : disable,
-                                                  size: 20,
-                                                ),
-                                          onPressed: () => setState(() =>
-                                              ispasswordev = !ispasswordev),
-                                        ),
-                                        hintText: 'Nova senha',
-                                        hintStyle: TextStyle(
-                                            color: selected == FormData.Password
-                                                ? enabledtxt
-                                                : disable,
-                                            fontSize: 12)),
-                                    obscureText: ispasswordev,
-                                    textAlignVertical: TextAlignVertical.center,
-                                    style: TextStyle(
-                                        color: selected == FormData.Password
-                                            ? enabledtxt
-                                            : disable,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
+                                    child: Text('Escolher imagem'),
                                   ),
                                 ),
                               ),
@@ -1354,54 +1230,33 @@ class _UserEditPageState extends State<UserEditPage>
                                 duration: Duration(milliseconds: 500),
                                 delay: 1,
                                 child: TextButton(
-                                    onPressed: () {
-                                      UserController userController2 =
-                                          UserController();
-
-                                      userController2.updatePassword(
-                                          context,
-                                          user,
-                                          currentlyPasswordController.text,
-                                          passwordController.text);
-                                    },
-                                    child: Text(
-                                      "Alterar",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        letterSpacing: 0.5,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  onPressed: imageFile != null
+                                      ? () {
+                                          UserController userController4 =
+                                              UserController();
+                                          userController4.updateImage(
+                                              context, user, imageFile!);
+                                        }
+                                      : null,
+                                  child: Text(
+                                    "Alterar",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      letterSpacing: 0.5,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: Color(0xFF2697FF),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 14.0, horizontal: 80),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0)))),
-                              ),
-                              Visibility(
-                                visible: user.temporaryemail != null,
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 40),
-                                    Center(
-                                      child: Text(
-                                        "Foi solicitado alteração de email, para concluir informe o código que foi enviado para o email: ${user.temporaryemail}",
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                    255, 223, 113, 113)
-                                                .withOpacity(0.9),
-                                            fontWeight: FontWeight.normal,
-                                            letterSpacing: 0.5,
-                                            fontSize: 15),
-                                        textAlign: TextAlign.center,
-                                      ),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Color(0xFF2697FF),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14.0, horizontal: 80),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         ),

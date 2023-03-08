@@ -8,51 +8,35 @@ import '../pages/email_verification_page.dart';
 import 'dart:io';
 
 class UserController {
-  Future<void> updatePhoto(BuildContext context, User user, File photo) async {
-    final url = Uri.parse('https://doitall.com.br/api/userupdatephoto');
-    final request = http.MultipartRequest('PUT', url);
+  Future<void> updateImage(
+      BuildContext context, User user, File imageFile) async {
+    final url = Uri.parse('https://doitall.com.br/api/updateImage');
+    var request = http.MultipartRequest('POST', url);
     request.fields['id'] = user.id.toString();
-    request.headers.addAll({
-      'Content-Type': 'multipart/form-data',
-      'Authorization': 'Bearer ${user.token}',
-    });
-    request.files.add(
-      await http.MultipartFile.fromPath(
-        'photo',
-        photo.path,
-      ),
-    );
-    final response = await request.send();
-    final json = jsonDecode(await response.stream.bytesToString());
-
+    request.files
+        .add(await http.MultipartFile.fromPath('avatar', imageFile.path));
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+    var json = jsonDecode(response.body);
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
+      final user = User.fromJson(json['user']);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', user.token);
       await prefs.setString('name', user.name);
-
-      if (user.emailVerifiedAt == null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EmailVerificationPage(user: user),
-          ),
-        );
-      }
-      if (user.emailVerifiedAt != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.green,
-            content: Text(json['message']),
-          ),
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UserEditPage(user: user),
-          ),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(255, 3, 255, 137),
+          content: Text(json['message']),
+          duration: Duration(seconds: 5),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UserEditPage(user: user),
+        ),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -209,20 +193,6 @@ class UserController {
           context,
           MaterialPageRoute(
             builder: (context) => EmailVerificationPage(user: user),
-          ),
-        );
-      }
-      if (user.emailVerifiedAt != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.green,
-            content: Text(json['message']),
-          ),
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UserEditPage(user: user),
           ),
         );
       }

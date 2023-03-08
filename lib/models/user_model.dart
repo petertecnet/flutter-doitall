@@ -4,20 +4,20 @@ class User {
   final int? status;
   final int? role;
 
-  late final String? name;
-  late final String? email;
-  late final String? phone;
-  late final String? cpf;
+  late String? name;
+  late String? email;
+  late String? phone;
+  late String? cpf;
 
-  late final String? address;
-  late final String? city;
-  late final String? uf;
-  late final String? cep;
-  late final String? forgotpasswordcode;
-  late final String? temporaryemail;
-  late final String? lastemail;
+  late String? address;
+  late String? city;
+  late String? uf;
+  late String? cep;
+  late String? forgotpasswordcode;
+  late String? temporaryemail;
+  late String? lastemail;
 
-  late final String? password;
+  late String? password;
 
   final String? emailVerifiedAt;
   final String? twoFactorSecret;
@@ -54,29 +54,35 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    final userJson = json['user'] as Map<String, dynamic>?;
+
     return User(
-      id: json['user']['id'],
-      status: json['user']['status'],
-      role: json['user']['role'],
-      name: json['user']['name'],
-      phone: json['user']['phone'],
-      cpf: json['user']['cpf'],
-      address: json['user']['address'],
-      city: json['user']['city'],
-      uf: json['user']['uf'],
-      email: json['user']['email'],
-      password: json['user']['password'],
-      temporaryemail: json['user']['temporaryemail'],
-      emailVerifiedAt: json['user']['email_verified_at'],
-      twoFactorSecret: json['user']['two_factor_secret'],
-      twoFactorRecoveryCodes: json['user']['two_factor_recovery_codes'],
-      twoFactorConfirmedAt: json['user']['two_factor_confirmed_at'] == null
+      id: userJson?['id'],
+      status: userJson?['status'],
+      role: userJson?['role'],
+      name: userJson?['name'],
+      phone: userJson?['phone'],
+      cpf: userJson?['cpf'],
+      address: userJson?['address'],
+      city: userJson?['city'],
+      uf: userJson?['uf'],
+      email: userJson?['email'],
+      password: userJson?['password'],
+      temporaryemail: userJson?['temporaryemail'],
+      emailVerifiedAt: userJson?['email_verified_at'],
+      twoFactorSecret: userJson?['two_factor_secret'],
+      twoFactorRecoveryCodes: userJson?['two_factor_recovery_codes'],
+      twoFactorConfirmedAt: userJson?['two_factor_confirmed_at'] == null
           ? null
-          : DateTime.parse(json['user']['two_factor_confirmed_at']),
-      uid: json['user']['uid'],
-      createdAt: DateTime.parse(json['user']['created_at']),
-      updatedAt: DateTime.parse(json['user']['updated_at']),
-      deletedAt: json['user']['deleted_at'],
+          : DateTime.parse(userJson!['two_factor_confirmed_at']),
+      uid: userJson?['uid'],
+      createdAt: userJson?['created_at'] == null
+          ? null
+          : DateTime.parse(userJson!['created_at']),
+      updatedAt: userJson?['updated_at'] == null
+          ? null
+          : DateTime.parse(userJson!['updated_at']),
+      deletedAt: userJson?['deleted_at'],
       token: json['token'],
     );
   }
