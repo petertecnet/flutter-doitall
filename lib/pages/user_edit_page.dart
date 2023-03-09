@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../Core/Animation/Fade_Animation.dart';
 import '../Core/Colors/Hex_Color.dart';
@@ -5,17 +8,14 @@ import '../controller/user_controller.dart';
 import '../models/user_model.dart';
 import 'components/drawer_component.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 enum FormData {
   Name,
   Phone,
   Email,
   Cpf,
-  Address,
-  City,
-  Uf,
+  Complement,
   Cep,
   Password,
   CurrentlyPassword,
@@ -41,17 +41,38 @@ class _UserEditPageState extends State<UserEditPage>
   bool ispasswordev = true;
   FormData? selected;
   final User user;
-  ImagePicker picker = ImagePicker();
-  File? imageFile;
+
+  File? _image;
+  PickedFile? _pickedFile;
+  final _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    _pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    if (await Permission.photos.request().isGranted) {
+      final pickedFile =
+          await ImagePicker().getImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _image = File(pickedFile.path);
+        });
+      }
+    } else {
+      // Você não tem permissão para acessar a galeria de imagens
+      // Exiba uma mensagem ou solicite permissão novamente
+    }
+    if (_pickedFile != null) {
+      setState(() {
+        _image = File(_pickedFile!.path);
+      });
+    }
+  }
 
   TextEditingController nameController = new TextEditingController();
   TextEditingController phoneController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
   TextEditingController cpfController = new TextEditingController();
 
-  TextEditingController addressController = new TextEditingController();
-  TextEditingController cityController = new TextEditingController();
-  TextEditingController ufController = new TextEditingController();
+  TextEditingController complementController = new TextEditingController();
   TextEditingController cepController = new TextEditingController();
 
   TextEditingController passwordController = new TextEditingController();
@@ -60,10 +81,11 @@ class _UserEditPageState extends State<UserEditPage>
       new TextEditingController();
 
   _UserEditPageState({required this.user});
-
+  File imageFile = File('path/to/default/image.jpg');
   @override
   void initState() {
     super.initState();
+    imageFile = File('path/to/default/image.jpg');
     _tabController = TabController(length: 4, vsync: this);
   }
 
@@ -480,33 +502,71 @@ class _UserEditPageState extends State<UserEditPage>
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              FadeAnimation(
-                                duration: Duration(milliseconds: 500),
-                                delay: 3,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return UserEditPage(
-                                            user: user,
-                                          );
-                                        }));
-                                      },
-                                      child: Text("Endereço",
-                                          style: TextStyle(
-                                              color:
-                                                  Colors.white.withOpacity(0.9),
-                                              fontWeight: FontWeight.bold,
-                                              letterSpacing: 0.5,
-                                              fontSize: 14)),
+                              Visibility(
+                                visible: user.cep != null,
+                                child: FadeAnimation(
+                                  duration: Duration(milliseconds: 500),
+                                  delay: 3,
+                                  child: Card(
+                                    elevation: 8,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                  ],
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Endereço",
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                        255, 205, 130, 130)
+                                                    .withOpacity(0.9),
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 0.5,
+                                                fontSize: 20),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            "${user.street} - ${user.complement} ${user.neighborhood}",
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontSize: 18),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.location_city,
+                                                  color: Colors.black87),
+                                              SizedBox(width: 8),
+                                              Text(
+                                                "${user.city}",
+                                                style: TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 18),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 8),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.location_on,
+                                                  color: Colors.black87),
+                                              SizedBox(width: 8),
+                                              Text(
+                                                "${user.uf}",
+                                                style: TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 18),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(
@@ -520,16 +580,16 @@ class _UserEditPageState extends State<UserEditPage>
                                   height: 40,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12.0),
-                                    color: selected == FormData.Address
+                                    color: selected == FormData.Complement
                                         ? enabled
                                         : backgroundColor,
                                   ),
                                   padding: const EdgeInsets.all(5.0),
                                   child: TextField(
-                                    controller: addressController,
+                                    controller: complementController,
                                     onTap: () {
                                       setState(() {
-                                        selected = FormData.Address;
+                                        selected = FormData.Complement;
                                       });
                                     },
                                     decoration: InputDecoration(
@@ -537,124 +597,22 @@ class _UserEditPageState extends State<UserEditPage>
                                       border: InputBorder.none,
                                       prefixIcon: Icon(
                                         Icons.local_activity,
-                                        color: selected == FormData.Address
+                                        color: selected == FormData.Complement
                                             ? enabledtxt
                                             : disable,
                                         size: 20,
                                       ),
                                       hintText:
-                                          '${user.address?.isNotEmpty ?? true ? "Sem endereço cadastrado" : user.address}',
+                                          '${user.complement!.isEmpty ? "Sem complemento cadastrado" : user.complement}',
                                       hintStyle: TextStyle(
-                                          color: selected == FormData.Address
+                                          color: selected == FormData.Complement
                                               ? enabledtxt
                                               : disable,
                                           fontSize: 12),
                                     ),
                                     textAlignVertical: TextAlignVertical.center,
                                     style: TextStyle(
-                                        color: selected == FormData.Address
-                                            ? enabledtxt
-                                            : disable,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              FadeAnimation(
-                                delay: 1,
-                                duration: Duration(milliseconds: 500),
-                                child: Container(
-                                  width: 300,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color: selected == FormData.City
-                                        ? enabled
-                                        : backgroundColor,
-                                  ),
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: TextField(
-                                    controller: cityController,
-                                    onTap: () {
-                                      setState(() {
-                                        selected = FormData.City;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.location_city,
-                                        color: selected == FormData.City
-                                            ? enabledtxt
-                                            : disable,
-                                        size: 20,
-                                      ),
-                                      hintText:
-                                          '${user.city?.isNotEmpty ?? true ? "Sem cidade cadastrada" : user.city}',
-                                      hintStyle: TextStyle(
-                                          color: selected == FormData.City
-                                              ? enabledtxt
-                                              : disable,
-                                          fontSize: 12),
-                                    ),
-                                    textAlignVertical: TextAlignVertical.center,
-                                    style: TextStyle(
-                                        color: selected == FormData.City
-                                            ? enabledtxt
-                                            : disable,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              FadeAnimation(
-                                delay: 1,
-                                duration: Duration(milliseconds: 500),
-                                child: Container(
-                                  width: 300,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    color: selected == FormData.Uf
-                                        ? enabled
-                                        : backgroundColor,
-                                  ),
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: TextField(
-                                    controller: ufController,
-                                    onTap: () {
-                                      setState(() {
-                                        selected = FormData.Uf;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.location_history,
-                                        color: selected == FormData.Uf
-                                            ? enabledtxt
-                                            : disable,
-                                        size: 20,
-                                      ),
-                                      hintText:
-                                          '${user.uf?.isNotEmpty ?? true ? "Sem UF cadastrado" : user.uf}',
-                                      hintStyle: TextStyle(
-                                          color: selected == FormData.Uf
-                                              ? enabledtxt
-                                              : disable,
-                                          fontSize: 12),
-                                    ),
-                                    textAlignVertical: TextAlignVertical.center,
-                                    style: TextStyle(
-                                        color: selected == FormData.Uf
+                                        color: selected == FormData.Complement
                                             ? enabledtxt
                                             : disable,
                                         fontWeight: FontWeight.bold,
@@ -696,7 +654,7 @@ class _UserEditPageState extends State<UserEditPage>
                                         size: 20,
                                       ),
                                       hintText:
-                                          '${user.cep?.isNotEmpty ?? true ? "Sem CEP cadastrado" : user.cep}',
+                                          '${user.cep!.isEmpty ? "Sem cep cadastrado" : user.cep}',
                                       hintStyle: TextStyle(
                                           color: selected == FormData.Cep
                                               ? enabledtxt
@@ -727,9 +685,7 @@ class _UserEditPageState extends State<UserEditPage>
                                       userController2.updateUseraddress(
                                           context,
                                           user,
-                                          addressController.text,
-                                          cityController.text,
-                                          ufController.text,
+                                          complementController.text,
                                           cepController.text);
                                     },
                                     child: Text(
@@ -985,10 +941,10 @@ class _UserEditPageState extends State<UserEditPage>
                                 delay: 1,
                                 child: TextButton(
                                     onPressed: () {
-                                      UserController userController2 =
+                                      UserController userController3 =
                                           UserController();
 
-                                      userController2.updatePassword(
+                                      userController3.updatePassword(
                                           context,
                                           user,
                                           currentlyPasswordController.text,
@@ -1206,22 +1162,37 @@ class _UserEditPageState extends State<UserEditPage>
                                 delay: 1,
                                 duration: Duration(milliseconds: 500),
                                 child: Container(
-                                  width: 300,
-                                  height: 40,
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      final pickedFile = await picker.getImage(
-                                          source: ImageSource.gallery);
-                                      if (pickedFile != null) {
-                                        setState(() {
-                                          imageFile = File(pickedFile.path);
-                                        });
-                                      }
-                                    },
-                                    child: Text('Escolher imagem'),
-                                  ),
-                                ),
+                                    width: 300,
+                                    height: 40,
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: ElevatedButton(
+                                      child: Text('Adicionar foto'),
+                                      onPressed: () => _pickImage(),
+                                    )),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              FadeAnimation(
+                                duration: Duration(milliseconds: 500),
+                                delay: 0.2,
+                                child: _pickedFile != null
+                                    ? CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage:
+                                            FileImage(File(_pickedFile!.path)),
+                                      )
+                                    : widget.user.avatar == null
+                                        ? CircleAvatar(
+                                            radius: 50,
+                                            backgroundImage: NetworkImage(
+                                                "https://doitall.com.br/img/avatar.png"),
+                                          )
+                                        : CircleAvatar(
+                                            radius: 50,
+                                            backgroundImage: NetworkImage(
+                                                "https://doitall.com.br/avatars/${widget.user.id}-${widget.user.cpf}/${widget.user.avatar}"),
+                                          ),
                               ),
                               const SizedBox(
                                 height: 20,
@@ -1230,12 +1201,12 @@ class _UserEditPageState extends State<UserEditPage>
                                 duration: Duration(milliseconds: 500),
                                 delay: 1,
                                 child: TextButton(
-                                  onPressed: imageFile != null
+                                  onPressed: _image != null
                                       ? () {
                                           UserController userController4 =
                                               UserController();
                                           userController4.updateImage(
-                                              context, user, imageFile!);
+                                              context, user, _image!);
                                         }
                                       : null,
                                   child: Text(

@@ -9,23 +9,31 @@ import 'dart:io';
 
 class UserController {
   Future<void> updateImage(
-      BuildContext context, User user, File imageFile) async {
+      BuildContext context, User user, File? _image) async {
+    if (_image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(255, 255, 3, 3),
+          content: Text('Nenhuma foto selecionada'),
+          duration: Duration(seconds: 5),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
     final url = Uri.parse('https://doitall.com.br/api/updateImage');
     var request = http.MultipartRequest('POST', url);
     request.fields['id'] = user.id.toString();
-    request.files
-        .add(await http.MultipartFile.fromPath('avatar', imageFile.path));
+    request.files.add(await http.MultipartFile.fromPath('avatar', _image.path));
     var streamedResponse = await request.send();
     var response = await http.Response.fromStream(streamedResponse);
     var json = jsonDecode(response.body);
     if (json['status'] == 200) {
-      final user = User.fromJson(json['user']);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.token);
-      await prefs.setString('name', user.name);
+      final user = User.fromJson(json);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Color.fromARGB(255, 3, 255, 137),
+          backgroundColor: Color.fromARGB(106, 85, 255, 0),
           content: Text(json['message']),
           duration: Duration(seconds: 5),
           behavior: SnackBarBehavior.floating,
@@ -51,7 +59,7 @@ class UserController {
 
   Future<void> updateUser(BuildContext context, User user, String name,
       String email, String phone, String cpf) async {
-    if (name.isEmpty) name = user.name!;
+    if (name.isEmpty) name = user.name!!;
     if (phone.isEmpty) phone = user.phone!;
     if (email.isEmpty) email = user.email!;
     if (cpf.isEmpty) cpf = user.cpf!;
@@ -68,32 +76,21 @@ class UserController {
 
     if (json['status'] == 200) {
       final user = User.fromJson(json);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.token);
-      await prefs.setString('name', user.name);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(106, 85, 255, 0),
+          content: Text(json['message']),
+          duration: Duration(seconds: 5),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
 
-      if (user.emailVerifiedAt == null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EmailVerificationPage(user: user),
-          ),
-        );
-      }
-      if (user.emailVerifiedAt != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.green,
-            content: Text(json['message']),
-          ),
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UserEditPage(user: user),
-          ),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UserEditPage(user: user),
+        ),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -106,18 +103,14 @@ class UserController {
     }
   }
 
-  Future<void> updateUseraddress(BuildContext context, User user,
-      String address, String city, String uf, String cep) async {
-    if (address.isEmpty) address = user.address!;
-    if (city.isEmpty) city = user.city!;
-    if (uf.isEmpty) uf = user.uf!;
+  Future<void> updateUseraddress(
+      BuildContext context, User user, String complement, String cep) async {
+    if (complement.isEmpty) complement = user.complement!;
     if (cep.isEmpty) cep = user.cep!;
-    final url = Uri.parse('https://doitall.com.br/api/userupdate');
+    final url = Uri.parse('https://doitall.com.br/api/updateAddress');
     final body = {
       'id': user.id.toString(),
-      'address': address,
-      'city': city,
-      'uf': uf,
+      'complement': complement,
       'cep': cep
     };
     final response = await http.put(url, body: body);
@@ -125,33 +118,23 @@ class UserController {
 
     if (json['status'] == 200) {
       final user = User.fromJson(json);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.token);
-      await prefs.setString('name', user.name);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(106, 85, 255, 0),
+          content: Text(json['message']),
+          duration: Duration(seconds: 5),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
 
-      if (user.emailVerifiedAt == null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EmailVerificationPage(user: user),
-          ),
-        );
-      }
-      if (user.emailVerifiedAt != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.green,
-            content: Text(json['message']),
-          ),
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UserEditPage(user: user),
-          ),
-        );
-      }
-    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UserEditPage(user: user),
+        ),
+      );
+    }
+    if (json['status'] != 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(255, 255, 3, 3),
@@ -184,20 +167,22 @@ class UserController {
 
     if (json['status'] == 200) {
       final user = User.fromJson(json);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.token);
-      await prefs.setString('name', user.name);
-
-      if (user.emailVerifiedAt == null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EmailVerificationPage(user: user),
-          ),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(106, 85, 255, 0),
+          content: Text(json['message']),
+          duration: Duration(seconds: 5),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UserEditPage(user: user),
+        ),
+      );
     }
-    if (json['status'] == 400) {
+    if (json['status'] != 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(255, 255, 3, 3),
@@ -220,10 +205,6 @@ class UserController {
 
     if (json['status'] == 200) {
       final user = User.fromJson(json);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.token);
-      await prefs.setString('name', user.name);
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -232,7 +213,7 @@ class UserController {
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Color.fromARGB(255, 14, 227, 32),
+          backgroundColor: Color.fromARGB(106, 85, 255, 0),
           content: Text(json['message']),
           duration: Duration(seconds: 5),
           behavior: SnackBarBehavior.floating,
@@ -240,7 +221,7 @@ class UserController {
       );
     }
 
-    if (json['status'] == 400) {
+    if (json['status'] != 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(255, 255, 3, 3),

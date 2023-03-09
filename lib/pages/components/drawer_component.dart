@@ -1,4 +1,3 @@
-//
 import 'package:doitall/pages/login_page.dart';
 import 'package:doitall/pages/user_edit_page.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,7 @@ class _DrawerComponentState extends State<DrawerComponent> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: double.infinity,
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
@@ -28,7 +28,18 @@ class _DrawerComponentState extends State<DrawerComponent> {
             accountEmail: Text(widget.user.email!),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
-              child: Icon(Icons.person),
+              radius: 500.0,
+              child: ClipOval(
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/placeholder.png',
+                  image: widget.user.avatar == null
+                      ? "https://doitall.com.br/img/avatar.png"
+                      : "https://doitall.com.br/avatars/${widget.user.id}-${widget.user.cpf}/${widget.user.avatar}",
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
           ListTile(

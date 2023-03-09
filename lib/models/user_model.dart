@@ -8,8 +8,12 @@ class User {
   late String? email;
   late String? phone;
   late String? cpf;
+  late String? avatar;
 
   late String? address;
+  late String? complement;
+  late String? street;
+  late String? neighborhood;
   late String? city;
   late String? uf;
   late String? cep;
@@ -37,8 +41,12 @@ class User {
     this.password,
     this.phone,
     this.cpf,
+    this.avatar,
     this.token,
     this.address,
+    this.neighborhood,
+    this.street,
+    this.complement,
     this.city,
     this.uf,
     this.cep,
@@ -63,7 +71,12 @@ class User {
       name: userJson?['name'],
       phone: userJson?['phone'],
       cpf: userJson?['cpf'],
+      avatar: userJson?['avatar'],
       address: userJson?['address'],
+      cep: userJson?['cep'],
+      neighborhood: userJson?['neighborhood'],
+      street: userJson?['street'],
+      complement: userJson?['complement'],
       city: userJson?['city'],
       uf: userJson?['uf'],
       email: userJson?['email'],

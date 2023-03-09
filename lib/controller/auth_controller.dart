@@ -74,8 +74,8 @@ class AuthController {
     if (json['status'] == 200) {
       final user = User.fromJson(json);
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', user.token);
-      await prefs.setString('name', user.name);
+      await prefs.setString('token', user.token!);
+      await prefs.setString('name', user.name!);
 
       if (user.emailVerifiedAt == null) {
         Navigator.pushReplacement(
