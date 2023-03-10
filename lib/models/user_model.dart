@@ -5,6 +5,7 @@ class User {
   final int? role;
 
   late String? name;
+  late String? company_id;
   late String? email;
   late String? phone;
   late String? cpf;
@@ -37,6 +38,7 @@ class User {
     this.status,
     this.role,
     this.name,
+    this.company_id,
     this.email,
     this.password,
     this.phone,
@@ -69,6 +71,7 @@ class User {
       status: userJson?['status'],
       role: userJson?['role'],
       name: userJson?['name'],
+      company_id: userJson?['company_id'],
       phone: userJson?['phone'],
       cpf: userJson?['cpf'],
       avatar: userJson?['avatar'],

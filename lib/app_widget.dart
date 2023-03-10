@@ -1,13 +1,12 @@
-import 'package:doitall/pages/reset_password_page.dart';
+import 'package:doitall/pages/auth/reset_password_page.dart';
+import 'package:doitall/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doitall/pages/home_page.dart';
-import 'package:doitall/pages/user_edit_page.dart';
-import 'package:doitall/pages/email_verification_page.dart';
-import 'package:doitall/pages/forgotpassword_page.dart';
-import 'package:doitall/pages/new_register_page.dart';
-import 'package:doitall/pages/login_page.dart';
+import 'package:doitall/pages/user/user_edit_page.dart';
+import 'package:doitall/pages/auth/email_verification_page.dart';
+import 'package:doitall/pages/auth/forgotpassword_page.dart';
+import 'package:doitall/pages/auth/new_register_page.dart';
 import 'app_controller.dart';
-import 'models/user_model.dart';
 
 class AppWidget extends StatelessWidget {
   var user;
@@ -35,7 +34,7 @@ class AppWidget extends StatelessWidget {
                 ),
             '/newregisterpage': (context) => NewRegisterPage(),
             '/forgotpasswordpage': (context) => ForgotpasswordPage(),
-            '/ResetPasswordPage': (context) => ResetPasswordPage( email: ''),
+            '/ResetPasswordPage': (context) => ResetPasswordPage(email: ''),
             '/emailverificationpage': (context) => EmailVerificationPage(
                   user: user,
                 ),

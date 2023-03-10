@@ -1,8 +1,8 @@
 import 'package:doitall/pages/login_page.dart';
-import 'package:doitall/pages/user_edit_page.dart';
+import 'package:doitall/pages/user/user_edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doitall/models/user_model.dart';
-
+import '../company/new_company_page.dart';
 import '../home_page.dart';
 
 class DrawerComponent extends StatefulWidget {
@@ -66,6 +66,21 @@ class _DrawerComponentState extends State<DrawerComponent> {
                 ),
               );
             },
+          ),
+          Visibility(
+            visible: user.company_id?.isNotEmpty == false,
+            child: ListTile(
+              leading: Icon(Icons.business),
+              title: Text('Cadastrar empresa'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewCompanyPage(user: widget.user),
+                  ),
+                );
+              },
+            ),
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

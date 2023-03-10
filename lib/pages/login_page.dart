@@ -1,11 +1,9 @@
-import 'package:doitall/pages/forgotpassword_page.dart';
-import 'package:doitall/pages/new_register_page.dart';
+import 'package:doitall/pages/auth/forgotpassword_page.dart';
+import 'package:doitall/pages/auth/new_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doitall/controller/auth_controller.dart';
-
 import '../Core/Animation/Fade_Animation.dart';
 import '../Core/Colors/Hex_Color.dart';
-import '../controller/auth_controller.dart';
 
 enum FormData {
   Email,

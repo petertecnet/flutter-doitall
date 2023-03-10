@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'package:doitall/pages/user_edit_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
-import '../pages/email_verification_page.dart';
+import '../pages/auth/email_verification_page.dart';
 import 'dart:io';
+
+import '../pages/user/user_edit_page.dart';
 
 class UserController {
   Future<void> updateImage(

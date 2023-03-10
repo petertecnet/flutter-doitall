@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'package:doitall/models/user_model.dart';
 import 'package:doitall/pages/home_page.dart';
+import 'package:doitall/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Core/Animation/Fade_Animation.dart';
-import '../pages/email_verification_page.dart';
-import '../pages/login_page.dart';
-import '../pages/reset_password_page.dart';
+import '../pages/auth/email_verification_page.dart';
+import 'package:doitall/pages/auth/reset_password_page.dart';
 
 class AuthController {
   Future<void> login(

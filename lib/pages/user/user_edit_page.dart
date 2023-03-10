@@ -2,11 +2,11 @@ import 'dart:io';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../Core/Animation/Fade_Animation.dart';
-import '../Core/Colors/Hex_Color.dart';
-import '../controller/user_controller.dart';
-import '../models/user_model.dart';
-import 'components/drawer_component.dart';
+import '../../Core/Animation/Fade_Animation.dart';
+import '../../Core/Colors/Hex_Color.dart';
+import '../../controller/user_controller.dart';
+import '../../models/user_model.dart';
+import '../components/drawer_component.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -115,7 +115,7 @@ class _UserEditPageState extends State<UserEditPage>
               Tab(text: 'Dados Pessoais'),
               Tab(text: 'Endereço'),
               Tab(text: 'Acesso'),
-              Tab(text: 'Fotos'),
+              Tab(text: 'Avatar'),
             ],
           ),
         ),
@@ -150,6 +150,29 @@ class _UserEditPageState extends State<UserEditPage>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      FadeAnimation(
+                        duration: Duration(milliseconds: 500),
+                        delay: 0.2,
+                        child: _pickedFile != null
+                            ? CircleAvatar(
+                                radius: 80,
+                                backgroundImage:
+                                    FileImage(File(_pickedFile!.path)),
+                              )
+                            : widget.user.avatar == null
+                                ? CircleAvatar(
+                                    radius: 80,
+                                    backgroundImage: NetworkImage(
+                                        "https://doitall.com.br/img/avatar.png"))
+                                : CircleAvatar(
+                                    radius: 80,
+                                    backgroundImage: NetworkImage(
+                                        "https://doitall.com.br/avatars/${widget.user.id}-${widget.user.cpf}/${widget.user.avatar}"),
+                                  ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Card(
                         elevation: 5,
                         color: const Color.fromARGB(255, 171, 211, 250)
@@ -503,7 +526,7 @@ class _UserEditPageState extends State<UserEditPage>
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Visibility(
-                                visible: user.cep != null,
+                                visible: user.complement?.isNotEmpty == true,
                                 child: FadeAnimation(
                                   duration: Duration(milliseconds: 500),
                                   delay: 3,
@@ -530,7 +553,7 @@ class _UserEditPageState extends State<UserEditPage>
                                           ),
                                           SizedBox(height: 8),
                                           Text(
-                                            "${user.street} - ${user.complement} ${user.neighborhood}",
+                                            "${widget.user.street ?? ""} - ${widget.user.complement ?? ""} ${widget.user.neighborhood ?? ""}",
                                             style: TextStyle(
                                                 color: Colors.black87,
                                                 fontSize: 18),
@@ -542,7 +565,7 @@ class _UserEditPageState extends State<UserEditPage>
                                                   color: Colors.black87),
                                               SizedBox(width: 8),
                                               Text(
-                                                "${user.city}",
+                                                "${user.city ?? ""}",
                                                 style: TextStyle(
                                                     color: Colors.black87,
                                                     fontSize: 18),
@@ -556,7 +579,7 @@ class _UserEditPageState extends State<UserEditPage>
                                                   color: Colors.black87),
                                               SizedBox(width: 8),
                                               Text(
-                                                "${user.uf}",
+                                                "${user.uf ?? ""}",
                                                 style: TextStyle(
                                                     color: Colors.black87,
                                                     fontSize: 18),
@@ -602,8 +625,7 @@ class _UserEditPageState extends State<UserEditPage>
                                             : disable,
                                         size: 20,
                                       ),
-                                      hintText:
-                                          '${user.complement!.isEmpty ? "Sem complemento cadastrado" : user.complement}',
+                                      hintText: 'Sem complemento cadastrado',
                                       hintStyle: TextStyle(
                                           color: selected == FormData.Complement
                                               ? enabledtxt
@@ -1147,7 +1169,7 @@ class _UserEditPageState extends State<UserEditPage>
                                           );
                                         }));
                                       },
-                                      child: Text("Fotos",
+                                      child: Text("Avatar",
                                           style: TextStyle(
                                               color:
                                                   Colors.white.withOpacity(0.9),
@@ -1166,7 +1188,7 @@ class _UserEditPageState extends State<UserEditPage>
                                     height: 40,
                                     padding: const EdgeInsets.all(5.0),
                                     child: ElevatedButton(
-                                      child: Text('Adicionar foto'),
+                                      child: Text('Alterar foto'),
                                       onPressed: () => _pickImage(),
                                     )),
                               ),

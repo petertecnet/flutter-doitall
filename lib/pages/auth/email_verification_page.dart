@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:doitall/controller/auth_controller.dart';
-import '../Core/Animation/Fade_Animation.dart';
-import '../Core/Colors/Hex_Color.dart';
-import '../models/user_model.dart';
-import 'login_page.dart';
+import '../../Core/Animation/Fade_Animation.dart';
+import '../../Core/Colors/Hex_Color.dart';
+import '../../models/user_model.dart';
+import '../login_page.dart';
 
 enum FormData { Code }
 

@@ -1,22 +1,22 @@
-import 'package:doitall/pages/user/user_edit_page.dart';
 import 'package:flutter/material.dart';
-import '../Core/Animation/Fade_Animation.dart';
-import '../Core/Colors/Hex_Color.dart';
-import '../controller/user_controller.dart';
-import '../models/user_model.dart';
-import 'components/drawer_component.dart';
+import '../components/drawer_component.dart';
+import '../user/user_edit_page.dart';
+import '/../Core/Animation/Fade_Animation.dart';
+import '/../Core/Colors/Hex_Color.dart';
+import '/../controller/user_controller.dart';
+import '/../models/user_model.dart';
 
 enum FormData { Name, Phone, Email, Cpf }
 
-class HomePage extends StatefulWidget {
+class NewCompanyPage extends StatefulWidget {
   final User user;
-  const HomePage({Key? key, required this.user}) : super(key: key);
+  const NewCompanyPage({Key? key, required this.user}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState(user: user);
+  _NewCompanyPageState createState() => _NewCompanyPageState(user: user);
 }
 
-class _HomePageState extends State<HomePage>
+class _NewCompanyPageState extends State<NewCompanyPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage>
   TextEditingController emailController = new TextEditingController();
   TextEditingController cpfController = new TextEditingController();
 
-  _HomePageState({required this.user});
+  _NewCompanyPageState({required this.user});
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage>
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Home Page'),
+          title: const Text('Nova empresa'),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -65,7 +65,6 @@ class _HomePageState extends State<HomePage>
             controller: _tabController,
             tabs: const [
               Tab(text: 'Tab 1'),
-              Tab(text: 'Tab 2'),
             ],
           ),
         ),

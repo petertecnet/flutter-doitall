@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Core/Animation/Fade_Animation.dart';
-import '../pages/email_verification_page.dart';
+import '../pages/auth/email_verification_page.dart';
 
 class EmailVerificationController {
   Future<void> emailverification(
