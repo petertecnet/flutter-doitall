@@ -6,11 +6,12 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../Core/Animation/Fade_Animation.dart';
 import '../../Core/Colors/Hex_Color.dart';
 import '../../controller/company_controller.dart';
-import '../../controller/user_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../models/company_model.dart';
+import '../../models/product_model.dart';
 import '../../models/user_model.dart';
 import '../components/drawer_component.dart';
+import 'package:doitall/controller/product_controller.dart';
 
 enum FormData { Name, Phone, Email, Cpf }
 
@@ -63,6 +64,34 @@ class _CompanyEditPageState extends State<CompanyEditPage>
         print("Ocorreu um erro ao enviar a imagem: $e");
       }
     }
+  }
+
+  List<Product> _products = [];
+  bool _isLoading = true;
+
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final products = await ProductController()
+          .getProductsByCompanyId(widget.company.id as String);
+      setState(() {
+        _products = products;
+      });
+    } catch (e) {
+      print('Error while loading products: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
   }
 
   _CompanyEditPageState({required this.user, required this.company});
