@@ -102,7 +102,7 @@ class CompanyController {
     User user,
     String cnpj,
   ) async {
-    final url = Uri.parse('https://doitall.com.br/api/company/companystore');
+    final url = Uri.parse('https://doitall.com.br/api/company/store');
 
     final response = await http.post(
       url,
