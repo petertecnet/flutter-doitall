@@ -66,32 +66,22 @@ class _CompanyEditPageState extends State<CompanyEditPage>
     }
   }
 
-  List<Product> _products = [];
-  bool _isLoading = true;
-
-  Future<void> _loadData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final products = await ProductController()
-          .getProductsByCompanyId(widget.company.id as String);
-      setState(() {
-        _products = products;
-      });
-    } catch (e) {
-      print('Error while loading products: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  late ProductController _productController;
+  List<Product> _productList = [];
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _productController = ProductController();
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    List<Product> products =
+        await _productController.getProductsByCompanyId(company.id.toString());
+    setState(() {
+      _productList = products;
+    });
   }
 
   _CompanyEditPageState({required this.user, required this.company});
@@ -434,7 +424,16 @@ class _CompanyEditPageState extends State<CompanyEditPage>
               ),
             ),
             Center(
-              child: Text('Tab 2 content'),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _productList.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                          '${_productList[index].name} - ${_productList[index].price}'),
+                    );
+                  }),
             ),
           ],
         ),
