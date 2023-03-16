@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/company_model.dart';
 import '../models/product_model.dart';
 
 class ProductController {
-  static const String baseUrl = 'https://doitall.com.br/api/product';
-
-  Future<List<Product>> getProductsByCompanyId(String companyId) async {
-    final url = Uri.parse('$baseUrl/index?company_id=$companyId');
-    final response = await http.post(url);
+  Future<List<Product>> getProductsByCompanyId(Company company) async {
+    final url = Uri.parse('https://doitall.com.br/api/product/index');
+    final body = {
+      'company_id': company.id.toString(),
+    };
+    final response = await http.put(url, body: body);
+    final json = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body)['products'];

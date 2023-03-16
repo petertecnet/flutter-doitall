@@ -8,7 +8,6 @@ import '../../Core/Colors/Hex_Color.dart';
 import '../../controller/company_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../models/company_model.dart';
-import '../../models/product_model.dart';
 import '../../models/user_model.dart';
 import '../components/drawer_component.dart';
 import 'package:doitall/controller/product_controller.dart';
@@ -28,7 +27,6 @@ class CompanyEditPage extends StatefulWidget {
 
 class _CompanyEditPageState extends State<CompanyEditPage>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
 
   Color enabled = const Color.fromARGB(255, 63, 56, 89);
   Color enabledtxt = Colors.white;
@@ -66,32 +64,10 @@ class _CompanyEditPageState extends State<CompanyEditPage>
     }
   }
 
-  late ProductController _productController;
-  List<Product> _productList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _productController = ProductController();
-    _loadProducts();
-  }
-
-  Future<void> _loadProducts() async {
-    List<Product> products =
-        await _productController.getProductsByCompanyId(company.id.toString());
-    setState(() {
-      _productList = products;
-    });
-  }
-
   _CompanyEditPageState({required this.user, required this.company});
   File imageFile = File('path/to/default/image.jpg');
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -113,18 +89,10 @@ class _CompanyEditPageState extends State<CompanyEditPage>
               );
             },
           ),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: const [
-              Tab(text: 'Dados'),
-              Tab(text: 'Produtos'),
-            ],
-          ),
+         
         ),
         drawer: DrawerComponent(user: user),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
+        body: 
             Padding(
               padding: EdgeInsets.only(top: 0),
               child: Container(
@@ -423,27 +391,8 @@ class _CompanyEditPageState extends State<CompanyEditPage>
                 ),
               ),
             ),
-            Center(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _productList.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                          '${_productList[index].name} - ${_productList[index].price}'),
-                    );
-                  }),
-            ),
           ],
         ),
-      ),
+    
     );
-  }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-}
