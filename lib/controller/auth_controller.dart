@@ -61,7 +61,7 @@ class AuthController {
       );
       return;
     }
-    final url = Uri.parse('https://doitall.com.br/api/login');
+    final url = Uri.parse('https://doitall.com.br/api/auth/login');
     final response = await http.post(
       url,
       body: {
@@ -113,7 +113,7 @@ class AuthController {
     String phone,
     String password,
   ) async {
-    final url = Uri.parse('https://doitall.com.br/api/register');
+    final url = Uri.parse('https://doitall.com.br/api/auth/register');
 
     final response = await http.post(
       url,
@@ -146,7 +146,7 @@ class AuthController {
     User user,
     String code,
   ) async {
-    final url = Uri.parse('https://doitall.com.br/api/codevalidation');
+    final url = Uri.parse('https://doitall.com.br/api/auth/codevalidation');
 
     final response = await http.post(
       url,
@@ -180,7 +180,7 @@ class AuthController {
     BuildContext context,
     User user,
   ) async {
-    final url = Uri.parse('https://doitall.com.br/api/sendemailcode');
+    final url = Uri.parse('https://doitall.com.br/api/auth/sendemailcode');
 
     final response = await http.post(
       url,
@@ -204,7 +204,7 @@ class AuthController {
     BuildContext context,
     String email,
   ) async {
-    final url = Uri.parse('https://doitall.com.br/api/sendCodeForgotPassword');
+    final url = Uri.parse('https://doitall.com.br/api/auth/sendCodeForgotPassword');
 
     final response = await http.post(
       url,
@@ -239,7 +239,7 @@ class AuthController {
     String code,
     String password,
   ) async {
-    final url = Uri.parse('https://doitall.com.br/api/codevalidationPassword');
+    final url = Uri.parse('https://doitall.com.br/api/auth/codevalidationPassword');
 
     final response = await http.post(
       url,

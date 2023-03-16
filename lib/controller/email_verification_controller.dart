@@ -12,7 +12,7 @@ class EmailVerificationController {
   Future<void> emailverification(
       BuildContext context, dynamic id, emailverifiedat) async {
     if (emailverifiedat != null) {
-      final url = Uri.parse('https://doitall.com.br/api/showuser');
+      final url = Uri.parse('https://doitall.com.br/api/auth/showuser');
       final response = await http.post(
         url,
         body: {
@@ -29,7 +29,8 @@ class EmailVerificationController {
         ),
       );
     }
-    final url = Uri.parse('https://doitall.com.br/api/resendEmailVerification');
+    final url =
+        Uri.parse('https://doitall.com.br/api/auth/resendEmailVerification');
     final response = await http.post(
       url,
       body: {

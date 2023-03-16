@@ -1,4 +1,5 @@
 import 'package:doitall/pages/auth/reset_password_page.dart';
+import 'package:doitall/pages/company/company_edit_page.dart';
 import 'package:doitall/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:doitall/pages/home_page.dart';
@@ -10,6 +11,7 @@ import 'app_controller.dart';
 
 class AppWidget extends StatelessWidget {
   var user;
+  var company;
 
   AppWidget();
 
@@ -41,6 +43,8 @@ class AppWidget extends StatelessWidget {
             '/usereditpage': (context) => UserEditPage(
                   user: user,
                 ),
+            '/companyeditpage': (context) =>
+                CompanyEditPage(user: user, company: company),
           },
         );
       },
