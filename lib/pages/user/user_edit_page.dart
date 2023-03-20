@@ -1189,7 +1189,8 @@ class _UserEditPageState extends State<UserEditPage>
                                     child: ElevatedButton(
                                       child: Text('Alterar foto'),
                                       onPressed: () => _pickImage(),
-                                    )),
+                                    )
+                                    ),
                               ),
                               const SizedBox(
                                 height: 20,

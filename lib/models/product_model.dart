@@ -1,41 +1,43 @@
-import 'package:flutter/foundation.dart';
-
 class Product {
-  final int id;
-  final String name;
-  final String price;
-  final String category;
-  final String type;
-  final String brand;
-  final String model;
-  final int userId;
-  final int companyId;
-  final String description;
+  late int? id;
+  late int? companyid;
+  late int? userid;
+
+  late String? name;
+  late String? imgproduct;
+  late String? price;
+  late String? category;
+  late String? type;
+  late String? brand;
+  late String? model;
+  late String? description;
 
   Product({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.category,
-    required this.type,
-    required this.brand,
-    required this.model,
-    required this.userId,
-    required this.companyId,
-    required this.description,
+    this.id,
+    this.name,
+    this.imgproduct,
+    this.price,
+    this.category,
+    this.type,
+    this.brand,
+    this.model,
+    this.companyid,
+    this.userid,
+    this.description,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'],
       name: json['name'],
+      imgproduct: json['img_product'],
       price: json['price'],
       category: json['category'],
       type: json['type'],
       brand: json['brand'],
       model: json['model'],
-      userId: json['user_id'],
-      companyId: json['company_id'],
+      userid: json['user_id'],
+      companyid: json['company_id'],
       description: json['description'],
     );
   }
@@ -43,13 +45,14 @@ class Product {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
+        'img_product': imgproduct,
         'price': price,
         'category': category,
         'type': type,
         'brand': brand,
         'model': model,
-        'user_id': userId,
-        'company_id': companyId,
+        'user_id': userid,
+        'company_id': companyid,
         'description': description,
       };
 }

@@ -1,6 +1,7 @@
 class Company {
-  int? id;
+  final int? id;
   int? userId;
+
   String? name;
   String? logo;
   String? cnpj;

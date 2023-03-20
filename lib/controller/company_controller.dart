@@ -63,10 +63,10 @@ class CompanyController {
     }
   }
 
-  Future<void> index(BuildContext context, User user) async {
+  Future<void> index(BuildContext context, int userid) async {
     final url = Uri.parse('https://doitall.com.br/api/company/show');
     final body = {
-      'userid': user.id.toString(),
+      'user_id': userid.toString(),
     };
     final response = await http.post(url, body: body);
     final jsonBody = response.body;
