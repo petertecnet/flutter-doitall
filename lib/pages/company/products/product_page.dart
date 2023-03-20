@@ -37,7 +37,7 @@ class ProductPage extends StatelessWidget {
             final product = products[index];
             final price = product.price is double
                 ? product.price
-                : double.parse(product.price ?? '0.0');
+                : (product.price ?? '0.0');
 
             return Card(
               elevation: 1,

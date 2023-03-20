@@ -69,8 +69,11 @@ class _AppWidgetState extends State<AppWidget> {
                 products: [], // passar a lista de produtos
                 companyid: company.id!), // passar a empresa
 
-            '/product/new': (context) =>
-                NewProductPage(companyid: company.id!, userid: user.id!),
+            '/product/new': (context) => NewProductPage(
+                  companyid: company.id!,
+                  userid: user.id!,
+                  user: user,
+                ),
           },
         );
       },

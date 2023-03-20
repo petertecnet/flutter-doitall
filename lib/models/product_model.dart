@@ -2,10 +2,10 @@ class Product {
   late int? id;
   late int? companyid;
   late int? userid;
+  late double? price;
 
   late String? name;
   late String? imgproduct;
-  late String? price;
   late String? category;
   late String? type;
   late String? brand;

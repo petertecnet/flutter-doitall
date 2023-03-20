@@ -25,7 +25,7 @@ class ProductController {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              NewProductPage(companyid: companyid, userid: userid),
+              NewProductPage(companyid: companyid, userid: userid, user: user),
         ),
       );
     } catch (e) {
@@ -33,8 +33,8 @@ class ProductController {
     }
   }
 
-  Future<void> store(BuildContext context, String name, int companyid,
-      int userid, File? _image) async {
+  Future<void> store(BuildContext context, String name, double price,
+      int companyid, int userid, File? _image) async {
     final url = Uri.parse('https://doitall.com.br/api/product/store');
     var request = http.MultipartRequest('POST', url);
     request.fields['user_id'] = userid.toString();
