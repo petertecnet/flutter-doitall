@@ -1,4 +1,4 @@
-class Product {
+class ProductModel {
   late int? id;
   late int? companyid;
   late int? userid;
@@ -12,7 +12,7 @@ class Product {
   late String? model;
   late String? description;
 
-  Product({
+  ProductModel({
     this.id,
     this.name,
     this.imgproduct,
@@ -26,8 +26,8 @@ class Product {
     this.description,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
       id: json['id'],
       name: json['name'],
       imgproduct: json['img_product'],

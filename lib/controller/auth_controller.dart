@@ -72,7 +72,7 @@ class AuthController {
     final json = jsonDecode(response.body);
 
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', user.token!);
       await prefs.setString('name', user.name!);
@@ -143,7 +143,7 @@ class AuthController {
 
   Future<void> codevalidation(
     BuildContext context,
-    User user,
+    UserModel user,
     String code,
   ) async {
     final url = Uri.parse('https://doitall.com.br/api/auth/codevalidation');
@@ -156,7 +156,7 @@ class AuthController {
       },
     );
     final json = jsonDecode(response.body);
-    user = User.fromJson(json);
+    user = UserModel.fromJson(json);
     if (json['status'] == 200) {
       Navigator.pushReplacement(
         context,
@@ -185,7 +185,7 @@ class AuthController {
 
   Future<void> sendemailcode(
     BuildContext context,
-    User user,
+    UserModel user,
   ) async {
     final url = Uri.parse('https://doitall.com.br/api/auth/sendemailcode');
 
@@ -196,7 +196,7 @@ class AuthController {
       },
     );
     final json = jsonDecode(response.body);
-    user = User.fromJson(json);
+    user = UserModel.fromJson(json);
     final message = json['message'];
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

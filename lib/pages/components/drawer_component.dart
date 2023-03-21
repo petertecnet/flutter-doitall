@@ -8,7 +8,7 @@ import '../company/new_company_page.dart';
 import '../home_page.dart';
 
 class DrawerComponent extends StatefulWidget {
-  final User user;
+  final UserModel user;
 
   const DrawerComponent({Key? key, required this.user}) : super(key: key);
 

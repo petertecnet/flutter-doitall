@@ -13,8 +13,8 @@ import '../components/drawer_component.dart';
 enum FormData { Name, Phone, Email, Cpf }
 
 class CompanyEditPage extends StatefulWidget {
-  final User user;
-  final Company company;
+  final UserModel user;
+  final CompanyModel company;
   const CompanyEditPage({Key? key, required this.user, required this.company})
       : super(key: key);
 
@@ -31,8 +31,8 @@ class _CompanyEditPageState extends State<CompanyEditPage>
   Color backgroundColor = const Color(0xFF1F1A30);
   bool ispasswordev = true;
   FormData? selected;
-  final User user;
-  final Company company;
+  final UserModel user;
+  final CompanyModel company;
 
   TextEditingController nameController = new TextEditingController();
   TextEditingController phoneController = new TextEditingController();

@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   final String? token;
   final int? id;
   final int? companyid;
@@ -33,7 +33,7 @@ class User {
   final DateTime? updatedAt;
   final dynamic deletedAt;
 
-  User({
+  UserModel({
     this.id,
     this.status,
     this.role,
@@ -63,10 +63,10 @@ class User {
     this.deletedAt,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     final userJson = json['user'] as Map<String, dynamic>?;
 
-    return User(
+    return UserModel(
       id: userJson?['id'],
       status: userJson?['status'],
       role: userJson?['role'],

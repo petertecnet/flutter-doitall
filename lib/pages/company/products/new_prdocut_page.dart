@@ -13,7 +13,7 @@ enum FormData { Name, Price, Category, Type, Brand, Description }
 class NewProductPage extends StatefulWidget {
   final int companyid;
   final int userid;
-  final User user;
+  final UserModel user;
 
   @override
   const NewProductPage({
@@ -141,7 +141,7 @@ class _NewProductPageState extends State<NewProductPage> {
                       height: 40,
                       padding: const EdgeInsets.all(5.0),
                       child: ElevatedButton(
-                        child: Text('Foto do item'),
+                        child: Text('Foto do produto/serviço'),
                         onPressed: () => _pickImage(),
                       ),
                     ),

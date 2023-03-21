@@ -10,7 +10,7 @@ import '../login_page.dart';
 enum FormData { Cnpj }
 
 class NewCompanyPage extends StatefulWidget {
-  final User user;
+  final UserModel user;
   const NewCompanyPage({Key? key, required this.user}) : super(key: key);
   @override
   State<NewCompanyPage> createState() => _NewCompanyPageState(user: user);
@@ -23,7 +23,7 @@ class _NewCompanyPageState extends State<NewCompanyPage> {
   Color backgroundColor = const Color(0xFF1F1A30);
   bool ispasswordev = true;
   FormData? selected;
-  final User user;
+  final UserModel user;
 
   final TextEditingController cnpjController = new TextEditingController();
 

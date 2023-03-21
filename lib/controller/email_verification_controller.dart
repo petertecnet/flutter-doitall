@@ -21,7 +21,7 @@ class EmailVerificationController {
       );
 
       final json = jsonDecode(response.body);
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -40,7 +40,7 @@ class EmailVerificationController {
 
     final json = jsonDecode(response.body);
     final emailVerifiedAt = json['user']['email_verified_at'];
-    final user = User.fromJson(json);
+    final user = UserModel.fromJson(json);
 
     final token = json['token'];
     final prefs = await SharedPreferences.getInstance();

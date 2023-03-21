@@ -9,7 +9,7 @@ import 'components/drawer_component.dart';
 enum FormData { Name, Phone, Email, Cpf }
 
 class HomePage extends StatefulWidget {
-  final User user;
+  final UserModel user;
   const HomePage({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage>
   Color backgroundColor = const Color(0xFF1F1A30);
   bool ispasswordev = true;
   FormData? selected;
-  final User user;
+  final UserModel user;
 
   TextEditingController nameController = new TextEditingController();
   TextEditingController phoneController = new TextEditingController();

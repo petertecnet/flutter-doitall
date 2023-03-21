@@ -1,4 +1,4 @@
-class Company {
+class CompanyModel {
   final int? id;
   int? userId;
 
@@ -30,7 +30,7 @@ class Company {
   DateTime? updatedAt;
   DateTime? deletedAt;
 
-  Company({
+  CompanyModel({
     this.id,
     this.userId,
     this.name,
@@ -61,10 +61,10 @@ class Company {
     this.emailVerifiedAt,
   });
 
-  factory Company.fromJson(Map<String, dynamic> json) {
+  factory CompanyModel.fromJson(Map<String, dynamic> json) {
     final companyJson = json['company'] as Map<String, dynamic>?;
 
-    return Company(
+    return CompanyModel(
       id: companyJson?['id'] as int?,
       userId: companyJson?['user_id'] as int?,
       name: companyJson?['name'] as String?,

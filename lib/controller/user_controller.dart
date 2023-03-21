@@ -9,8 +9,8 @@ import 'dart:io';
 import '../pages/user/user_edit_page.dart';
 
 class UserController {
-  Future<void> index(BuildContext context, User user, String name, String email,
-      String phone, String cpf) async {
+  Future<void> index(BuildContext context, UserModel user, String name,
+      String email, String phone, String cpf) async {
     final url = Uri.parse('https://doitall.com.br/api/user/show');
     final body = {
       'id': user.id.toString(),
@@ -19,7 +19,7 @@ class UserController {
     final json = jsonDecode(response.body);
 
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -30,7 +30,7 @@ class UserController {
   }
 
   Future<void> updateImage(
-      BuildContext context, User user, File? _image) async {
+      BuildContext context, UserModel user, File? _image) async {
     if (_image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -51,7 +51,7 @@ class UserController {
     var response = await http.Response.fromStream(streamedResponse);
     var json = jsonDecode(response.body);
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(106, 85, 255, 0),
@@ -78,7 +78,7 @@ class UserController {
     }
   }
 
-  Future<void> updateUser(BuildContext context, User user, String name,
+  Future<void> updateUser(BuildContext context, UserModel user, String name,
       String email, String phone, String cpf) async {
     if (name.isEmpty) name = user.name!!;
     if (phone.isEmpty) phone = user.phone!;
@@ -96,7 +96,7 @@ class UserController {
     final json = jsonDecode(response.body);
 
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(106, 85, 255, 0),
@@ -124,8 +124,8 @@ class UserController {
     }
   }
 
-  Future<void> updateUseraddress(
-      BuildContext context, User user, String complement, String cep) async {
+  Future<void> updateUseraddress(BuildContext context, UserModel user,
+      String complement, String cep) async {
     if (complement.isEmpty) complement = user.complement!;
     if (cep.isEmpty) cep = user.cep!;
     final url = Uri.parse('https://doitall.com.br/api/user/updateAddress');
@@ -138,7 +138,7 @@ class UserController {
     final json = jsonDecode(response.body);
 
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(106, 85, 255, 0),
@@ -167,7 +167,7 @@ class UserController {
     }
   }
 
-  Future<void> updatePassword(BuildContext context, User user,
+  Future<void> updatePassword(BuildContext context, UserModel user,
       String currentlyPassword, String newPassword) async {
     final name = user.name!;
     final phone = user.phone!;
@@ -187,7 +187,7 @@ class UserController {
     final json = jsonDecode(response.body);
 
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(106, 85, 255, 0),
@@ -216,7 +216,7 @@ class UserController {
   }
 
   Future<void> changeemailcodevalidation(
-      BuildContext context, User user, String code) async {
+      BuildContext context, UserModel user, String code) async {
     final url =
         Uri.parse('https://doitall.com.br/api/user/changeemailcodevalidation');
 
@@ -225,7 +225,7 @@ class UserController {
     final json = jsonDecode(response.body);
 
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

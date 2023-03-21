@@ -8,7 +8,7 @@ import '../login_page.dart';
 enum FormData { Code }
 
 class EmailVerificationPage extends StatefulWidget {
-  final User user;
+  final UserModel user;
   const EmailVerificationPage({Key? key, required this.user}) : super(key: key);
   @override
   State<EmailVerificationPage> createState() =>
@@ -22,7 +22,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
   Color backgroundColor = const Color(0xFF1F1A30);
   bool ispasswordev = true;
   FormData? selected;
-  final User user;
+  final UserModel user;
   final TextEditingController codeController = new TextEditingController();
 
   _EmailVerificationPageState({required this.user});

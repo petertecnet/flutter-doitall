@@ -8,9 +8,9 @@ import '../../../models/user_model.dart';
 import '../../components/drawer_component.dart';
 
 class ProductPage extends StatelessWidget {
-  final List<model.Product> products;
+  final List<model.ProductModel> products;
   final int companyid;
-  final User user;
+  final UserModel user;
 
   const ProductPage({
     Key? key,
@@ -79,17 +79,15 @@ class ProductPage extends StatelessWidget {
                                   duration: Duration(milliseconds: 500),
                                   delay: 0.2,
                                   child: product.imgproduct == null
-                                      ? CircleAvatar(
-                                          radius: 40,
-                                          backgroundImage: NetworkImage(
-                                            "https://doitall.com.br/img/business.png",
-                                          ),
+                                      ? Image.network(
+                                          "https://doitall.com.br/img/business.png",
+                                          width: 160,
+                                          height: 160,
                                         )
-                                      : CircleAvatar(
-                                          radius: 40,
-                                          backgroundImage: NetworkImage(
-                                            "https://doitall.com.br/products/${product.id}-${product.companyid}/${product.imgproduct}",
-                                          ),
+                                      : Image.network(
+                                          "https://doitall.com.br/products/${product.id}-${product.companyid}/${product.imgproduct}",
+                                          width: 160,
+                                          height: 160,
                                         ),
                                 ),
                                 SizedBox(height: 8),

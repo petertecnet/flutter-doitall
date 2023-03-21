@@ -23,15 +23,15 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  late Company company;
-  late User user;
+  late CompanyModel company;
+  late UserModel user;
 
   @override
   void initState() {
     super.initState();
     // Cria uma nova instância de Company com o valor inicial.
-    company = Company();
-    user = User();
+    company = CompanyModel();
+    user = UserModel();
   }
 
   @override

@@ -22,7 +22,7 @@ enum FormData {
 }
 
 class UserEditPage extends StatefulWidget {
-  final User user;
+  final UserModel user;
   const UserEditPage({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -39,7 +39,7 @@ class _UserEditPageState extends State<UserEditPage>
   Color backgroundColor = const Color(0xFF1F1A30);
   bool ispasswordev = true;
   FormData? selected;
-  final User user;
+  final UserModel user;
 
   File? _image;
   PickedFile? _pickedFile;

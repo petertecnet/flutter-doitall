@@ -5,13 +5,12 @@ import 'package:doitall/models/user_model.dart';
 import 'package:doitall/pages/company/new_company_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/company/company_edit_page.dart';
 
 class CompanyController {
   Future<void> updateImage(
-      BuildContext context, User user, File? _image) async {
+      BuildContext context, UserModel user, File? _image) async {
     if (_image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -32,8 +31,8 @@ class CompanyController {
     var response = await http.Response.fromStream(streamedResponse);
     var json = jsonDecode(response.body);
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
-      final company = Company.fromJson(json);
+      final user = UserModel.fromJson(json);
+      final company = CompanyModel.fromJson(json);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(106, 85, 255, 0),
@@ -80,8 +79,8 @@ class CompanyController {
     try {
       final json = jsonDecode(jsonBody);
       if (json['status'] == 200) {
-        final user = User.fromJson(json);
-        final company = Company.fromJson(json);
+        final user = UserModel.fromJson(json);
+        final company = CompanyModel.fromJson(json);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -99,7 +98,7 @@ class CompanyController {
 
   Future<void> newCompany(
     BuildContext context,
-    User user,
+    UserModel user,
     String cnpj,
   ) async {
     final url = Uri.parse('https://doitall.com.br/api/company/store');
@@ -115,8 +114,8 @@ class CompanyController {
     final message = json['message'];
 
     if (json['status'] == 200) {
-      final user = User.fromJson(json);
-      final company = Company.fromJson(json);
+      final user = UserModel.fromJson(json);
+      final company = CompanyModel.fromJson(json);
 
       Navigator.pushReplacement(
         context,

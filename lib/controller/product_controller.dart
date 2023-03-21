@@ -20,7 +20,7 @@ class ProductController {
       final response = await http.post(url, body: body);
       final json = jsonDecode(response.body);
 
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -62,10 +62,10 @@ class ProductController {
 
     if (json['status'] == 200) {
       final json = jsonDecode(response.body);
-      final user = User.fromJson(json);
+      final user = UserModel.fromJson(json);
       final List<dynamic> responseData = json['products'];
-      final List<Product> products =
-          responseData.map((data) => Product.fromJson(data)).toList();
+      final List<ProductModel> products =
+          responseData.map((data) => ProductModel.fromJson(data)).toList();
 
       Navigator.push(
         context,
@@ -103,9 +103,9 @@ class ProductController {
 
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json['products'];
-      final user = User.fromJson(json);
-      final List<Product> products =
-          responseData.map((data) => Product.fromJson(data)).toList();
+      final user = UserModel.fromJson(json);
+      final List<ProductModel> products =
+          responseData.map((data) => ProductModel.fromJson(data)).toList();
       Navigator.push(
         context,
         MaterialPageRoute(
