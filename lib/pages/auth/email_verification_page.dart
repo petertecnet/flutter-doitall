@@ -182,7 +182,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                                             BorderRadius.circular(12.0)))),
                           ),
                           const SizedBox(
-                            height: 40,
+                            height: 10,
                           ),
                           FadeAnimation(
                             duration: Duration(milliseconds: 500),
@@ -194,25 +194,24 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                                   authController.sendemailcode(context, user);
                                 },
                                 child: Text(
-                                  "Enviar novo codigo",
+                                  "Enviar novo código",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    letterSpacing: 0.5,
-                                    fontSize: 20,
+                                    letterSpacing: 0.1,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 18, 12, 136),
+                                    backgroundColor: Color(0xFF2697FF),
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 14.0, horizontal: 80),
+                                        vertical: 20.0, horizontal: 80),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(12.0)))),
                           ),
                           const SizedBox(
-                            height: 40,
+                            height: 10,
                           ),
                           FadeAnimation(
                             duration: Duration(milliseconds: 500),
@@ -226,19 +225,19 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                                   }));
                                 },
                                 child: Text(
-                                  "Sair",
+                                  "SAIR",
                                   style: TextStyle(
-                                    color: Color.fromARGB(255, 255, 255, 255),
-                                    letterSpacing: 2,
-                                    fontSize: 25,
+                                    color: Color.fromARGB(255, 255, 2, 2),
+                                    letterSpacing: 0.1,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 style: TextButton.styleFrom(
                                     backgroundColor:
-                                        Color.fromARGB(255, 32, 36, 116),
+                                        Color.fromARGB(255, 0, 0, 0),
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 14.0, horizontal: 80),
+                                        vertical: 20.0, horizontal: 30),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(12.0)))),

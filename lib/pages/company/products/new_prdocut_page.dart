@@ -8,7 +8,7 @@ import '../../../controller/product_controller.dart';
 import '../../../models/user_model.dart';
 import '../../components/drawer_component.dart';
 
-enum FormData { Name, Price, Category, Type, Description }
+enum FormData { Name, Price, Category, Type, Brand, Description }
 
 class NewProductPage extends StatefulWidget {
   final int companyid;
@@ -37,6 +37,7 @@ class _NewProductPageState extends State<NewProductPage> {
   final priceController = TextEditingController();
   final TextEditingController categoryController = new TextEditingController();
   final TextEditingController typeController = new TextEditingController();
+  final TextEditingController brandController = new TextEditingController();
 
   final TextEditingController descriptionController =
       new TextEditingController();
@@ -71,7 +72,7 @@ class _NewProductPageState extends State<NewProductPage> {
     return WillPopScope(
       onWillPop: () async {
         // Retorna false para impedir que a página seja fechada
-        return false;
+        return true;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -107,20 +108,31 @@ class _NewProductPageState extends State<NewProductPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FadeAnimation(
-                    duration: Duration(milliseconds: 500),
-                    delay: 0.2,
-                    child: _pickedFile != null
-                        ? CircleAvatar(
-                            radius: 150,
-                            backgroundImage: FileImage(File(_pickedFile!.path)),
-                          )
-                        : CircleAvatar(
-                            radius: 150,
-                            backgroundImage: NetworkImage(
-                                "https://doitall.com.br/img/avatar.png"),
-                          ),
+                  const SizedBox(
+                    height: 30,
                   ),
+                  Card(
+                    elevation: 1,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 400,
+                        child: FadeAnimation(
+                          duration: Duration(milliseconds: 500),
+                          delay: 0.2,
+                          child: _pickedFile != null
+                              ? Image.file(File(_pickedFile!.path),
+                                  width: 1, fit: BoxFit.cover)
+                              : Image.network(
+                                  "https://doitall.com.br/img/camera.png",
+                                  width: 100,
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
+
                   FadeAnimation(
                     delay: 1,
                     duration: Duration(milliseconds: 500),
@@ -129,7 +141,7 @@ class _NewProductPageState extends State<NewProductPage> {
                       height: 40,
                       padding: const EdgeInsets.all(5.0),
                       child: ElevatedButton(
-                        child: Text('Foto do produto'),
+                        child: Text('Foto do item'),
                         onPressed: () => _pickImage(),
                       ),
                     ),
@@ -352,6 +364,56 @@ class _NewProductPageState extends State<NewProductPage> {
                             delay: 3,
                             child: Container(
                               width: MediaQuery.of(context).size.width,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                color: selected == FormData.Brand
+                                    ? enabled
+                                    : backgroundColor,
+                              ),
+                              padding: const EdgeInsets.all(5.0),
+                              child: TextField(
+                                controller: brandController,
+                                onTap: () {
+                                  setState(() {
+                                    selected = FormData.Brand;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(
+                                    Icons.shop_2_outlined,
+                                    color: selected == FormData.Brand
+                                        ? enabledtxt
+                                        : disable,
+                                    size: 15,
+                                  ),
+                                  hintText: 'Marca',
+                                  hintStyle: TextStyle(
+                                      color: selected == FormData.Brand
+                                          ? enabledtxt
+                                          : disable,
+                                      fontSize: 15),
+                                ),
+                                textAlignVertical: TextAlignVertical.center,
+                                style: TextStyle(
+                                    color: selected == FormData.Brand
+                                        ? enabledtxt
+                                        : disable,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                            duration: Duration(milliseconds: 500),
+                            delay: 3,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
                               height: 100,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.0),
@@ -404,13 +466,34 @@ class _NewProductPageState extends State<NewProductPage> {
                                 onPressed: () {
                                   ProductController productController =
                                       ProductController();
-                                  productController.store(
+                                  final double? price = double.tryParse(
+                                      priceController.text
+                                          .replaceAll(',', '.'));
+                                  if (price != null) {
+                                    productController.store(
                                       context,
-                                      nameController.text.trim(),
-                                      priceController.value as double,
+                                      nameController.text,
+                                      typeController.text,
+                                      categoryController.text,
+                                      brandController.text,
+                                      descriptionController.text,
+                                      price,
                                       widget.companyid,
                                       widget.userid,
-                                      _image);
+                                      _image,
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 188, 28, 28),
+                                        content: Text(
+                                            'Por favor insira um valor de preço válido'),
+                                        duration: Duration(seconds: 5),
+                                        behavior: SnackBarBehavior.floating,
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Text(
                                   "Cadastrar",

@@ -112,26 +112,26 @@ class CompanyController {
       },
     );
     final json = jsonDecode(response.body);
+    final message = json['message'];
 
     if (json['status'] == 200) {
       final user = User.fromJson(json);
       final company = Company.fromJson(json);
-      final message = json['message'];
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color.fromARGB(255, 82, 255, 82),
-          content: Center(child: Text(message)),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => CompanyEditPage(user: user, company: company),
         ),
       );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(255, 3, 37, 255),
+          content: Center(child: Text(message)),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     } else {
-      final message = json['message'];
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.redAccent,

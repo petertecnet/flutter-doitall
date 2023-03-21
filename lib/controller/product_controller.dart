@@ -33,13 +33,26 @@ class ProductController {
     }
   }
 
-  Future<void> store(BuildContext context, String name, double price,
-      int companyid, int userid, File? _image) async {
+  Future<void> store(
+      BuildContext context,
+      String name,
+      String type,
+      String brand,
+      String category,
+      String description,
+      double price,
+      int companyid,
+      int userid,
+      File? _image) async {
     final url = Uri.parse('https://doitall.com.br/api/product/store');
     var request = http.MultipartRequest('POST', url);
     request.fields['user_id'] = userid.toString();
     request.fields['company_id'] = companyid.toString();
     request.fields['name'] = name;
+    request.fields['type'] = type;
+    request.fields['brand'] = brand;
+    request.fields['category'] = category;
+    request.fields['description'] = description;
     request.files
         .add(await http.MultipartFile.fromPath('img_product', _image!.path));
     var streamedResponse = await request.send();

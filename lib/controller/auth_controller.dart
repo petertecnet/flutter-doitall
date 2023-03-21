@@ -164,6 +164,13 @@ class AuthController {
           builder: (context) => HomePage(user: user),
         ),
       );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(255, 24, 8, 247),
+          content: Center(child: Text('Codigo válidado com sucesso.')),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     } else {
       final message = json['message'];
       ScaffoldMessenger.of(context).showSnackBar(
@@ -193,7 +200,7 @@ class AuthController {
     final message = json['message'];
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Color.fromARGB(255, 9, 168, 40),
         content: Center(child: Text(message)),
         behavior: SnackBarBehavior.floating,
       ),
@@ -204,7 +211,8 @@ class AuthController {
     BuildContext context,
     String email,
   ) async {
-    final url = Uri.parse('https://doitall.com.br/api/auth/sendCodeForgotPassword');
+    final url =
+        Uri.parse('https://doitall.com.br/api/auth/sendCodeForgotPassword');
 
     final response = await http.post(
       url,
@@ -239,7 +247,8 @@ class AuthController {
     String code,
     String password,
   ) async {
-    final url = Uri.parse('https://doitall.com.br/api/auth/codevalidationPassword');
+    final url =
+        Uri.parse('https://doitall.com.br/api/auth/codevalidationPassword');
 
     final response = await http.post(
       url,
